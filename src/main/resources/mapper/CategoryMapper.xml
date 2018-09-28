@@ -24,7 +24,7 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.cloud.yblog.mapper.CategoryMapper">
+<mapper namespace="org.cloud.zblog.mapper.CategoryMapper">
   <resultMap type="Category" id="categoryResultMap">
     <result property="id" column="cate_id" />
     <result property="name" column="cate_name" />

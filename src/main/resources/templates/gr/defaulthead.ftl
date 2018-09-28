@@ -1,3 +1,4 @@
+<#assign base=request.contextPath />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!--禁止浏览器缩放-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -13,9 +14,9 @@
     <!--屏幕顶部条的颜色-->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta charset="utf-8"/>
-    <link rel="shortcut icon" href="${basePath}/static/favicon.ico"/>
-    <link rel='stylesheet' id='sytle-css' href='${basePath}/static/gr/style.css' type='text/css' media='all'/>
-    <#if isHomePage><link rel='stylesheet' id='home-css' href='${basePath}/static/gr/home.css' type='text/css' media='all'/></#if>
-    <link rel='stylesheet' id='pc-css' href='${basePath}/static/gr/pc.css' type='text/css' media='all'/>
-    <link rel='stylesheet' id='phone-css' href='${basePath}/static/gr/phone.css' type='text/css' media='all'/>
-    <link rel='stylesheet' href='${basePath}/static/vender/nprogress/0.2.0/nprogress.min.css' type='text/css'/>
+    <link rel="shortcut icon" href="${base}/static/favicon.ico"/>
+    <link rel='stylesheet' id='sytle-css' href='${base}/static/gr/style.css' type='text/css' media='all'/>
+    <#if isHomePage><link rel='stylesheet' id='home-css' href='${base}/static/gr/home.css' type='text/css' media='all'/></#if>
+    <link rel='stylesheet' id='pc-css' href='${base}/static/gr/pc.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='phone-css' href='${base}/static/gr/phone.css' type='text/css' media='all'/>
+    <link rel='stylesheet' href='${base}/static/vender/nprogress/0.2.0/nprogress.min.css' type='text/css'/>

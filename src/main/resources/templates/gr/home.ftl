@@ -1,6 +1,8 @@
+<#assign base=request.contextPath />
 <!DOCTYPE html>
 <html>
 <head>
+    <base id="base" href="${base}">
     <title>琅嬛福地</title>
     <#include "defaulthead.ftl">
 </head>

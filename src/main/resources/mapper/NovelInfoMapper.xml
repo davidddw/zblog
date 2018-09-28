@@ -24,7 +24,7 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.cloud.yblog.mapper.NovelInfoMapper">
+<mapper namespace="org.cloud.zblog.mapper.NovelInfoMapper">
   <resultMap type="NovelInfo" id="novelInfoResultMap">
     <result property="id" column="novelInfo_id" />
     <result property="name" column="novelInfo_name" />

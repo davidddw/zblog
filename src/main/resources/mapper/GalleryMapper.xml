@@ -24,7 +24,7 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.cloud.yblog.mapper.GalleryMapper">
+<mapper namespace="org.cloud.zblog.mapper.GalleryMapper">
   <resultMap type="Gallery" id="galleryResultMap">
     <result property="id" column="gallery_id" />
     <result property="name" column="gallery_name" />

@@ -9,20 +9,20 @@
   <!--</settings>-->
 
   <typeAliases>
-    <typeAlias type="org.cloud.yblog.model.User" alias="User" />
-    <typeAlias type="org.cloud.yblog.model.Role" alias="Role" />
-    <typeAlias type="org.cloud.yblog.model.UserRoleLink" alias="UserRoleLink" />
-    <typeAlias type="org.cloud.yblog.model.Category" alias="Category" />
-    <typeAlias type="org.cloud.yblog.model.Article" alias="Article" />
-    <typeAlias type="org.cloud.yblog.model.Comment" alias="Comment" />
-    <typeAlias type="org.cloud.yblog.model.Tag" alias="Tag" />
-    <typeAlias type="org.cloud.yblog.model.Page" alias="Page" />
-    <typeAlias type="org.cloud.yblog.model.ArticleTagLink" alias="ArticleTagLink" />
-    <typeAlias type="org.cloud.yblog.model.EntityCount" alias="EntityCount" />
-    <typeAlias type="org.cloud.yblog.model.Album" alias="Album" />
-    <typeAlias type="org.cloud.yblog.model.Gallery" alias="Gallery" />
-    <typeAlias type="org.cloud.yblog.model.NovelInfo" alias="NovelInfo" />
-    <typeAlias type="org.cloud.yblog.model.NovelChapter" alias="NovelChapter" />
+    <typeAlias type="org.cloud.zblog.model.User" alias="User" />
+    <typeAlias type="org.cloud.zblog.model.Role" alias="Role" />
+    <typeAlias type="org.cloud.zblog.model.UserRoleLink" alias="UserRoleLink" />
+    <typeAlias type="org.cloud.zblog.model.Category" alias="Category" />
+    <typeAlias type="org.cloud.zblog.model.Article" alias="Article" />
+    <typeAlias type="org.cloud.zblog.model.Comment" alias="Comment" />
+    <typeAlias type="org.cloud.zblog.model.Tag" alias="Tag" />
+    <typeAlias type="org.cloud.zblog.model.Page" alias="Page" />
+    <typeAlias type="org.cloud.zblog.model.ArticleTagLink" alias="ArticleTagLink" />
+    <typeAlias type="org.cloud.zblog.model.EntityCount" alias="EntityCount" />
+    <typeAlias type="org.cloud.zblog.model.Album" alias="Album" />
+    <typeAlias type="org.cloud.zblog.model.Gallery" alias="Gallery" />
+    <typeAlias type="org.cloud.zblog.model.NovelInfo" alias="NovelInfo" />
+    <typeAlias type="org.cloud.zblog.model.NovelChapter" alias="NovelChapter" />
   </typeAliases>
 
 </configuration>

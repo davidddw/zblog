@@ -24,7 +24,7 @@
   -->
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.cloud.yblog.mapper.TagMapper">
+<mapper namespace="org.cloud.zblog.mapper.TagMapper">
   <resultMap type="Tag" id="tagResultMap">
     <result property="id" column="tag_id" />
     <result property="name" column="tag_name" />
