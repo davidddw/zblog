@@ -65,7 +65,8 @@ public class PropertiesUtil {
                 is = resource.getInputStream();
                 propertiesPersister.load(props, new InputStreamReader(is, DEFAULT_ENCODING));
             } catch (IOException ex) {
-                logger.info("Could not load properties from classpath:" + location + ": " + ex.getMessage());
+                logger.info("Could not load properties from classpath:" + location + ": "
+                        + ex.getMessage());
             } finally {
                 if (is != null) {
                     try {

@@ -25,6 +25,8 @@
 package org.cloud.zblog.controller.exception;
 
 public class APIException extends RuntimeException {
+
+    private static final long serialVersionUID = 8417233939089841864L;
     private final int code;
     private final String message;
 

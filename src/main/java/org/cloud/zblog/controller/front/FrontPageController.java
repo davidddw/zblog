@@ -93,8 +93,9 @@ public class FrontPageController extends FrontBaseController {
      * @return
      */
     @GetMapping(UrlConstants.HOMEPAGE)
-    public ModelAndView homePageHandler(@ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request,
-                                        @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum) {
+    public ModelAndView homePageHandler(@ModelAttribute("options") HashMap<String, String> options,
+            HttpServletRequest request,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum) {
         ModelAndView result;
         if (1 == pageNum) {
             result = defaultFirstPage(UrlConstants.FRONT_HOME_FTL, request);
@@ -114,7 +115,9 @@ public class FrontPageController extends FrontBaseController {
      * @return
      */
     @GetMapping(UrlConstants.CATEGORIES)
-    public ModelAndView articleListByCategoriesHandler(@ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request) {
+    public ModelAndView articleListByCategoriesHandler(
+            @ModelAttribute("options") HashMap<String, String> options,
+            HttpServletRequest request) {
         List<Article> articleList = new ArrayList<>();
         List<Category> categories = categoryService.getAll();
         ModelAndView result;
@@ -139,17 +142,19 @@ public class FrontPageController extends FrontBaseController {
      * @return
      */
     @GetMapping(UrlConstants.CATEGORY)
-    public ModelAndView articleListByCategory(@ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request,
-                                              @PathVariable String categoryName,
-                                              @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                              @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public ModelAndView articleListByCategory(
+            @ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request,
+            @PathVariable String categoryName,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         ModelAndView result;
         Category category = categoryService.getCategoryByName(categoryName)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", categoryName));
         if (null == category) {
             result = defaultModelAndView(UrlConstants.FRONT_NOTFOUND_FTL, request);
         } else {
-            List<Article> articleList = articleService.getArticlesByCategory(new Category(categoryName, null), pageNum, pageSize);
+            List<Article> articleList = articleService
+                    .getArticlesByCategory(new Category(categoryName, null), pageNum, pageSize);
             result = defaultModelAndView(UrlConstants.FRONT_CATEGORY_FTL, request);
             result.addObject("count", new PageInfo<>(articleList).getTotal());
             result.addObject("category", category);
@@ -166,8 +171,8 @@ public class FrontPageController extends FrontBaseController {
      */
     @GetMapping(UrlConstants.PAGE)
 
-    public ModelAndView page(@ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request,
-                             @PathVariable String pageTitle) {
+    public ModelAndView page(@ModelAttribute("options") HashMap<String, String> options,
+            HttpServletRequest request, @PathVariable String pageTitle) {
         Page page = pageService.getBySlug(pageTitle)
                 .orElseThrow(() -> new ResourceNotFoundException("Page", pageTitle));
         ModelAndView result;
@@ -187,7 +192,8 @@ public class FrontPageController extends FrontBaseController {
      * @return
      */
     @GetMapping(value = UrlConstants.BIAO)
-    public ModelAndView biao(@ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request) {
+    public ModelAndView biao(@ModelAttribute("options") HashMap<String, String> options,
+            HttpServletRequest request) {
         List<Tag> tagList = tagService.getAll();
         ModelAndView result = defaultModelAndView(UrlConstants.FRONT_BIAO_FTL, request);
         result.addObject("tags", tagList);
@@ -203,11 +209,13 @@ public class FrontPageController extends FrontBaseController {
      * @return
      */
     @GetMapping(UrlConstants.TAG)
-    public ModelAndView articleListByTagHandler(@ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request,
-                                                @PathVariable String tagName,
-                                                @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                                @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        List<Article> articleList = articleService.getArticlesByTag(new Tag(tagName), pageNum, pageSize);
+    public ModelAndView articleListByTagHandler(
+            @ModelAttribute("options") HashMap<String, String> options, HttpServletRequest request,
+            @PathVariable String tagName,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        List<Article> articleList = articleService.getArticlesByTag(new Tag(tagName), pageNum,
+                pageSize);
         ModelAndView result;
         if (articleList.isEmpty()) {
             result = defaultModelAndView(UrlConstants.FRONT_NOTFOUND_FTL, request);
@@ -229,7 +237,7 @@ public class FrontPageController extends FrontBaseController {
      */
     @GetMapping(UrlConstants.ARTICLE)
     public ModelAndView articles(@ModelAttribute("options") HashMap<String, String> options,
-                                 @PathVariable String articleId, HttpServletRequest request) {
+            @PathVariable String articleId, HttpServletRequest request) {
         Long myArticleId = StringHelper.parseLongWithDefault(articleId, 0);
         Article article = articleService.getArticlesByWid(myArticleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Article", articleId));
@@ -241,14 +249,17 @@ public class FrontPageController extends FrontBaseController {
             articleService.updateArticleReadCount(article);
             result = defaultModelAndView(UrlConstants.FRONT_ARTICLE_FTL, request);
             result.addObject("article", article);
-            result.addObject("relative_article", articleService.getRelativeArticlesByCategory(article));
+            result.addObject("relative_article",
+                    articleService.getRelativeArticlesByCategory(article));
         }
         return result;
     }
 
     @GetMapping(value = "/qrcode")
-    public void qrcode(String content, @RequestParam(defaultValue = "256", required = false) int width,
-                       @RequestParam(defaultValue = "256", required = false) int height, HttpServletResponse response) {
+    public void qrcode(String content,
+            @RequestParam(defaultValue = "256", required = false) int width,
+            @RequestParam(defaultValue = "256", required = false) int height,
+            HttpServletResponse response) {
         ServletOutputStream outputStream = null;
         response.setHeader("Cache-Control", "no-cache");
         response.setContentType("image/png");
@@ -310,8 +321,8 @@ public class FrontPageController extends FrontBaseController {
      */
     @GetMapping(UrlConstants.ALBUMS)
     public ModelAndView galleriesListHandler(HttpServletRequest request,
-                                             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                             @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         List<Album> albums = albumService.getAllAlbum(pageNum, pageSize);
         ModelAndView result;
         if (albums.isEmpty()) {
@@ -343,8 +354,8 @@ public class FrontPageController extends FrontBaseController {
      */
     @GetMapping(UrlConstants.NOVEL)
     public ModelAndView novelListHandler(HttpServletRequest request,
-                                         @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         List<NovelInfo> novelInfoList = novelInfoService.getAllNovel(pageNum, pageSize);
         if (novelInfoList.isEmpty()) {
             return defaultModelAndView(UrlConstants.FRONT_NOTFOUND_FTL, request);
@@ -362,9 +373,11 @@ public class FrontPageController extends FrontBaseController {
      * @return
      */
     @GetMapping(UrlConstants.NOVELCHAPTER)
-    public ModelAndView novelChanpterlistHandler(HttpServletRequest request, @PathVariable String novelId) {
+    public ModelAndView novelChanpterlistHandler(HttpServletRequest request,
+            @PathVariable String novelId) {
         ModelAndView result;
-        List<NovelChapter> lastNovelChapter = novelChapterService.getLastChaptersByNovelId(Long.parseLong(novelId));
+        List<NovelChapter> lastNovelChapter = novelChapterService
+                .getLastChaptersByNovelId(Long.parseLong(novelId));
         if (lastNovelChapter.isEmpty()) {
             result = defaultModelAndView(UrlConstants.FRONT_NOTFOUND_FTL, request);
         } else {
@@ -387,29 +400,35 @@ public class FrontPageController extends FrontBaseController {
      * @return
      */
     @GetMapping(UrlConstants.NOVELDETAIL)
-    public ModelAndView novelDetailHandler(HttpServletRequest request, @PathVariable String novelId, @PathVariable String chapterId) {
-        NovelChapter novelDetails = novelChapterService.getDetailsByNovelAndChapter(Long.parseLong(novelId), Long.parseLong(chapterId))
+    public ModelAndView novelDetailHandler(HttpServletRequest request, @PathVariable String novelId,
+            @PathVariable String chapterId) {
+        NovelChapter novelDetails = novelChapterService
+                .getDetailsByNovelAndChapter(Long.parseLong(novelId), Long.parseLong(chapterId))
                 .orElseThrow(() -> new ResourceNotFoundException("Novel", chapterId));
         ModelAndView result;
         if (novelDetails == null) {
             result = defaultModelAndView(UrlConstants.FRONT_NOTFOUND_FTL, request);
         } else {
-            String content = StringHelper.getHtmlContentFromTxt(PropertiesUtil.getConfigBykey("uploadPath") + "/" + novelDetails.getLocation());
+            String content = StringHelper.getHtmlContentFromTxt(
+                    PropertiesUtil.getConfigBykey("uploadPath") + "/" + novelDetails.getLocation());
             novelDetails.setLocation(content != null ? content : "");
             result = defaultModelAndView(UrlConstants.FRONT_NOVELDETAIL_FTL, request);
             result.addObject("noveldetails", novelDetails);
-            Map<String, NovelChapter> previousNext = novelChapterService.getPrevAndNextNovel(Long.parseLong(novelId), Long.parseLong(chapterId));
+            Map<String, NovelChapter> previousNext = novelChapterService
+                    .getPrevAndNextNovel(Long.parseLong(novelId), Long.parseLong(chapterId));
             String prevUrl, nextUrl;
             if (previousNext.get("prev_novel") == null) {
                 prevUrl = novelDetails.getNovel().getId().toString();
             } else {
-                prevUrl = String.format("%s/%s", novelDetails.getNovel().getId(), previousNext.get("prev_novel").getWid());
+                prevUrl = String.format("%s/%s", novelDetails.getNovel().getId(),
+                        previousNext.get("prev_novel").getWid());
             }
             result.addObject("prevurl", prevUrl);
             if (previousNext.get("next_novel") == null) {
                 nextUrl = novelDetails.getNovel().getId().toString();
             } else {
-                nextUrl = String.format("%s/%s", novelDetails.getNovel().getId(), previousNext.get("next_novel").getWid());
+                nextUrl = String.format("%s/%s", novelDetails.getNovel().getId(),
+                        previousNext.get("next_novel").getWid());
             }
             result.addObject("nexturl", nextUrl);
         }

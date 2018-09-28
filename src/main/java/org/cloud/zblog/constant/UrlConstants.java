@@ -28,7 +28,7 @@ package org.cloud.zblog.constant;
  * Created by d05660ddw on 2017/3/20.
  */
 public class UrlConstants {
-    //URLS
+    // URLS
     public static final String HOMEPAGE = "/";
     public static final String GETARTICLE = "/article/get";
     public static final String CATEGORIES = "/category";
@@ -55,34 +55,33 @@ public class UrlConstants {
     public static final String ERROR404 = "/errorpage";
     public static final String PATH_LOVE = "/admin-ajax";
 
-
     public static final String WEB = "/web";
     public static final String API = "/api/v1";
     public static final String OAUTHAPI = "/api/v2";
     public static final String ADMIN = "/backend";
 
-    //admin模板
-    public static final String ADMININDEX =  "/index";
+    // admin模板
+    public static final String ADMININDEX = "/index";
     public static final String WRITEARTICLE = "/writeArticle";
     public static final String LISTARTICLE = "/listArticle";
     public static final String LISTCATEGORY = "/listCategory";
     public static final String LISTTAG = "/listTag";
-    public static final String LISTPAGE= "/listPage";
-    public static final String LISTGALLERY= "/listGallery";
-    public static final String LISTNOVEL= "/listNovel";
-    public static final String LISTNOVELCHAPTER= "/listNovelChapter";
-    public static final String LISTCOMMENT= "/listComment";
-    public static final String LISTUSER= "/listUser";
+    public static final String LISTPAGE = "/listPage";
+    public static final String LISTGALLERY = "/listGallery";
+    public static final String LISTNOVEL = "/listNovel";
+    public static final String LISTNOVELCHAPTER = "/listNovelChapter";
+    public static final String LISTCOMMENT = "/listComment";
+    public static final String LISTUSER = "/listUser";
     public static final String LISTSETTINGS = "/listSettings";
     public static final String UPLOADPIC = "/upload";
     public static final String CROPPIC = "/cropscale";
     public static final String DEVELOPING = "/developing";
 
-    //模板名称
+    // 模板名称
     public static final String THEME = "gr";
     public static final String ADMINTHEME = "admin";
 
-    //front模板
+    // front模板
     public static final String FRONT_HOME_FTL = "/home";
     public static final String FRONT_CATEGORIES_FTL = "/categories";
     public static final String FRONT_CATEGORY_FTL = "/category";

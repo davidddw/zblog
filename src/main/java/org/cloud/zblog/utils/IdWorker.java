@@ -48,12 +48,12 @@ public class IdWorker {
     private IdWorker(final long workerId) {
         super();
         if (workerId > maxWorkerId || workerId < 0) {
-            throw new IllegalArgumentException(String.format(
-                    "worker Id can't be greater than %d or less than 0",
-                    maxWorkerId));
+            throw new IllegalArgumentException(String
+                    .format("worker Id can't be greater than %d or less than 0", maxWorkerId));
         }
         this.workerId = workerId;
     }
+
     private synchronized long nextId() {
         long timestamp = this.timeGen();
         if (this.lastTimestamp == timestamp) {
@@ -67,17 +67,17 @@ public class IdWorker {
         }
         if (timestamp < this.lastTimestamp) {
             try {
-                throw new Exception(
-                        String.format(
-                                "Clock moved backwards. Refusing to generate id for %d milliseconds",
-                                this.lastTimestamp - timestamp));
+                throw new Exception(String.format(
+                        "Clock moved backwards. Refusing to generate id for %d milliseconds",
+                        this.lastTimestamp - timestamp));
             } catch (Exception e) {
                 logger.error("error", e);
             }
         }
 
         this.lastTimestamp = timestamp;
-        return ((timestamp - twepoch << timestampLeftShift)) | (this.workerId << workerIdShift) | (this.sequence);
+        return ((timestamp - twepoch << timestampLeftShift)) | (this.workerId << workerIdShift)
+                | (this.sequence);
     }
 
     private long tilNextMillis(final long lastTimestamp) {
@@ -103,7 +103,7 @@ public class IdWorker {
         return instance.nextId();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println(IdWorker.getSingletonId());
     }
 }

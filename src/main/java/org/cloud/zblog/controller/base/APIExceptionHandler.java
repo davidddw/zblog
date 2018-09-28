@@ -58,12 +58,11 @@ public class APIExceptionHandler extends AbstractErrorController {
 
         Map<String, Object> errors = getErrorAttributes(request, false);
         getApiException(request).ifPresent(apiError -> {
-            errors.put("message" , apiError.message());
+            errors.put("message", apiError.message());
             errors.put("code", apiError.code());
         });
         // If you don't want to expose exception!
         errors.remove("exception");
-
 
         return ResponseEntity.status(status).body(errors);
     }
@@ -74,13 +73,13 @@ public class APIExceptionHandler extends AbstractErrorController {
     }
 
     private Optional<APIException> getApiException(HttpServletRequest request) {
-//        RequestAttributes attributes = new ServletRequestAttributes(request);
-//        WebRequest webRequest = 
-//        Throwable throwable = errorAttributes.getError(attributes);
-//        if (throwable instanceof APIException) {
-//            APIException exception = (APIException) throwable;
-//            return Optional.of(exception);
-//        }
+        // RequestAttributes attributes = new ServletRequestAttributes(request);
+        // WebRequest webRequest =
+        // Throwable throwable = errorAttributes.getError(attributes);
+        // if (throwable instanceof APIException) {
+        // APIException exception = (APIException) throwable;
+        // return Optional.of(exception);
+        // }
 
         return Optional.empty();
     }

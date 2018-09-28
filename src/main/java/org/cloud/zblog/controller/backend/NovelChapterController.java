@@ -65,12 +65,11 @@ public class NovelChapterController extends AdminBaseController {
      * 2. 将生成的list批量更新数据库。
      */
     @PostMapping(value = "/novelchapter", produces = "application/json;charset=utf8")
-    public
-    @ResponseBody
-    ResponseMessage addNovelChapter(@RequestBody NovelData novelData) {
-        List<NovelChapter> novelChapters = novelChapterService.getNovelChapterFromFile(Long.parseLong(novelData.getId()), novelData.getLocation());
+    public @ResponseBody ResponseMessage addNovelChapter(@RequestBody NovelData novelData) {
+        List<NovelChapter> novelChapters = novelChapterService.getNovelChapterFromFile(
+                Long.parseLong(novelData.getId()), novelData.getLocation());
         long number = 0;
-        if(!novelChapters.isEmpty()) {
+        if (!novelChapters.isEmpty()) {
             number = novelChapterService.saveNovelChapterByBatch(novelChapters);
         }
         return new ResponseMessage(String.valueOf(number));
@@ -80,16 +79,14 @@ public class NovelChapterController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/novelchapter")
-    public
-    @ResponseBody
-    Map<String, Object> listNovelChapter(@RequestParam String draw,
-                                         @RequestParam int startIndex,
-                                         @RequestParam int pageSize,
-                                         @RequestParam(value = "condition", required = false) String condition,
-                                         @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
-                                         @RequestParam(value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
+    public @ResponseBody Map<String, Object> listNovelChapter(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "condition", required = false) String condition,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
-        info.put("pageData", novelChapterService.getAllByOrder(condition, orderColumn, orderDir, startIndex, pageSize));
+        info.put("pageData", novelChapterService.getAllByOrder(condition, orderColumn, orderDir,
+                startIndex, pageSize));
         info.put("total", novelChapterService.getCountByCondition(condition, new NovelChapter()));
         info.put("draw", draw);
         return info;
@@ -99,24 +96,21 @@ public class NovelChapterController extends AdminBaseController {
      * 先删除文件，再删除数据库
      */
     @DeleteMapping("/novelchapter/{id}")
-    public
-    @ResponseBody
-    ResponseMessage removeNovelChapter(@PathVariable String id) {
+    public @ResponseBody ResponseMessage removeNovelChapter(@PathVariable String id) {
         NovelChapter novelChapter = novelChapterService.getById(Long.parseLong(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Novel", id));
         FileUtil.delete(getUploadPath() + "/" + novelChapter.getLocation());
-        return new ResponseMessage(String.valueOf(novelChapterService.deleteById(novelChapter.getId())));
+        return new ResponseMessage(
+                String.valueOf(novelChapterService.deleteById(novelChapter.getId())));
     }
 
     /**
      * 批量删除：先删除文件，再删除数据库
      */
     @PostMapping("/novelchapter/delete")
-    public
-    @ResponseBody
-    ResponseMessage removeNovelChapters(@RequestBody List<String> ids) {
+    public @ResponseBody ResponseMessage removeNovelChapters(@RequestBody List<String> ids) {
         int sum = 0;
-        for(String id : ids) {
+        for (String id : ids) {
             NovelChapter novelChapter = novelChapterService.getById(Long.parseLong(id))
                     .orElseThrow(() -> new ResourceNotFoundException("Novel", id));
             FileUtil.delete(getUploadPath() + "/" + novelChapter.getLocation());
@@ -130,7 +124,8 @@ public class NovelChapterController extends AdminBaseController {
      */
     @RequestMapping(value = "/uploadCommonFile", method = RequestMethod.POST, produces = "application/json;charset=utf8")
     @ResponseBody
-    public ResponseMessage uploadFileHandler(@RequestParam("avatar1") MultipartFile file, HttpServletRequest request) {
+    public ResponseMessage uploadFileHandler(@RequestParam("avatar1") MultipartFile file,
+            HttpServletRequest request) {
         String uploadPath = FileUtil.uploadCommonFile(file, request);
         return new ResponseMessage(uploadPath);
     }

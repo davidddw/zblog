@@ -54,7 +54,7 @@ import freemarker.template.TemplateExceptionHandler;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(useDefaultFilters = false, basePackages = {"org.cloud.zblog"})
+@ComponentScan(useDefaultFilters = false, basePackages = { "org.cloud.zblog" })
 public class MvcConfiguration implements WebMvcConfigurer {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -67,8 +67,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 
     @Bean(name = "freemarkerConfig")
@@ -91,17 +90,19 @@ public class MvcConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * 浏览器form表单只支持GET与POST请求，而DELETE、PUT等method并不支持
-     * 解决不支持put form数据的问题
+     * 浏览器form表单只支持GET与POST请求，而DELETE、PUT等method并不支持 解决不支持put form数据的问题
      */
     class PostAndPutCommonsMultipartResolver extends CommonsMultipartResolver {
         @Override
         public boolean isMultipart(HttpServletRequest request) {
             String method = request.getMethod().toLowerCase();
-            //By default, only POST is allowed. Since this is an 'update' we should accept PUT.
-            if (!Arrays.asList("put", "post").contains(method)) { return false; }
+            // By default, only POST is allowed. Since this is an 'update' we
+            // should accept PUT.
+            if (!Arrays.asList("put", "post").contains(method)) {
+                return false;
+            }
             String contentType = request.getContentType();
-            return (contentType != null &&contentType.toLowerCase().startsWith("multipart/"));
+            return (contentType != null && contentType.toLowerCase().startsWith("multipart/"));
         }
     }
 }

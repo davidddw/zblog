@@ -61,7 +61,8 @@ public class AccountAuthenticationProvider extends AbstractUserDetailsAuthentica
     private PasswordEncoder passwordEncoder;
 
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken token) throws AuthenticationException {
+    protected void additionalAuthenticationChecks(UserDetails userDetails,
+            UsernamePasswordAuthenticationToken token) throws AuthenticationException {
         logger.debug("> additionalAuthenticationChecks");
 
         if (token.getCredentials() == null || userDetails.getPassword() == null) {
@@ -76,7 +77,8 @@ public class AccountAuthenticationProvider extends AbstractUserDetailsAuthentica
     }
 
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken token) throws AuthenticationException {
+    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken token)
+            throws AuthenticationException {
         logger.debug("> retrieveUser");
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);

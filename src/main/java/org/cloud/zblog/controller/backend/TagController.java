@@ -64,8 +64,7 @@ public class TagController extends AdminBaseController {
      * 新增
      */
     @PostMapping("/tag")
-    public @ResponseBody
-    ResponseMessage addTag(@RequestBody Tag tag) {
+    public @ResponseBody ResponseMessage addTag(@RequestBody Tag tag) {
         long number = tagService.saveOrUpdateTag(tag);
         return new ResponseMessage(String.valueOf(number));
     }
@@ -74,8 +73,7 @@ public class TagController extends AdminBaseController {
      * 更新
      */
     @PutMapping("/tag/{id}")
-    public @ResponseBody
-    ResponseMessage updateTag(@PathVariable String id, @RequestBody Tag tag) {
+    public @ResponseBody ResponseMessage updateTag(@PathVariable String id, @RequestBody Tag tag) {
         tag.setId(Long.parseLong(id));
         long number = tagService.saveOrUpdateTag(tag);
         return new ResponseMessage(String.valueOf(number));
@@ -85,12 +83,10 @@ public class TagController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/tag")
-    public @ResponseBody
-    Map<String, Object> listTag(@RequestParam String draw,
-                                @RequestParam int startIndex,
-                                @RequestParam int pageSize,
-                                @RequestParam(value = "orderColumn", required = false, defaultValue = "count") String orderColumn,
-                                @RequestParam(value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
+    public @ResponseBody Map<String, Object> listTag(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "count") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
         tagService.setTagCount();
         info.put("pageData", tagService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
@@ -103,12 +99,11 @@ public class TagController extends AdminBaseController {
      * 删除
      */
     @DeleteMapping("/tag/{id}")
-    public @ResponseBody
-    ResponseMessage removeTag(@PathVariable String id) {
+    public @ResponseBody ResponseMessage removeTag(@PathVariable String id) {
         Tag tag = tagService.getById(Long.parseLong(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Tag", id));
         List<Article> articleList = articleService.getArticlesByTag(tag);
-        for(Article article : articleList) {
+        for (Article article : articleList) {
             String finalString = subString(article.getTagStrings(), tag.getName());
             article.setTagStrings(finalString);
             articleService.save(article);

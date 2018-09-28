@@ -81,7 +81,8 @@ public abstract class BaseController {
         return userService.getAll();
     }
 
-    protected abstract ModelAndView defaultModelAndView(String modelTemplate, HttpServletRequest request);
+    protected abstract ModelAndView defaultModelAndView(String modelTemplate,
+            HttpServletRequest request);
 
     @ModelAttribute("basePath")
     public String getBasePath() {

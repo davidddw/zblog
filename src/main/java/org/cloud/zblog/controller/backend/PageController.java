@@ -58,8 +58,7 @@ public class PageController extends AdminBaseController {
      * 新增
      */
     @PostMapping("/page")
-    public @ResponseBody
-    ResponseMessage addPage(@RequestBody Page page) {
+    public @ResponseBody ResponseMessage addPage(@RequestBody Page page) {
         long number = pageService.saveOrUpdateCategory(page);
         return new ResponseMessage(String.valueOf(number));
     }
@@ -68,8 +67,8 @@ public class PageController extends AdminBaseController {
      * 更新
      */
     @PutMapping("/page/{id}")
-    public @ResponseBody
-    ResponseMessage updatePage(@PathVariable String id, @RequestBody Page page) {
+    public @ResponseBody ResponseMessage updatePage(@PathVariable String id,
+            @RequestBody Page page) {
         page.setId(Long.parseLong(id));
         long number = pageService.saveOrUpdateCategory(page);
         return new ResponseMessage(String.valueOf(number));
@@ -79,14 +78,13 @@ public class PageController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/page")
-    public @ResponseBody
-    Map<String, Object> listPage(@RequestParam String draw,
-                                 @RequestParam int startIndex,
-                                 @RequestParam int pageSize,
-                                 @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
-                                 @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
+    public @ResponseBody Map<String, Object> listPage(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
-        info.put("pageData", pageService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
+        info.put("pageData",
+                pageService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
         info.put("total", pageService.getCount(new Page()));
         info.put("draw", draw);
         return info;
@@ -96,8 +94,7 @@ public class PageController extends AdminBaseController {
      * 删除，除了第一个其他允许删除
      */
     @DeleteMapping("/page/{id}")
-    public @ResponseBody
-    ResponseMessage removePage(@PathVariable String id) {
+    public @ResponseBody ResponseMessage removePage(@PathVariable String id) {
         Page page = pageService.getById(Long.parseLong(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Page", id));
         return new ResponseMessage(String.valueOf(pageService.deleteById(page.getId())));
@@ -107,10 +104,9 @@ public class PageController extends AdminBaseController {
      * 批量删除，除了第一个其他允许删除
      */
     @PostMapping("/page/delete")
-    public @ResponseBody
-    ResponseMessage removePages(@RequestBody List<String> ids) {
+    public @ResponseBody ResponseMessage removePages(@RequestBody List<String> ids) {
         int sum = 0;
-        for(String id : ids) {
+        for (String id : ids) {
             Page page = pageService.getById(Long.parseLong(id))
                     .orElseThrow(() -> new ResourceNotFoundException("Page", id));
             sum += pageService.deleteById(page.getId());

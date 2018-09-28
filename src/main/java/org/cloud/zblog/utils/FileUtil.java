@@ -59,9 +59,9 @@ public class FileUtil {
     private static final String FILE_DATE_DIR_FMT = "yyyy/MM";
     private static final String FILE_UPLOAD_SUB_IMG_DIR_FMT = "yyyyMMdd_HHmmss_SSS";
     private static final String ALLOWEXT = "jpg,gif,bmp,jpeg,png";
-    //上传文件的最大文件大小
+    // 上传文件的最大文件大小
     private static final long MAX_FILE_SIZE = 1024 * 1024 * 10;
-    //系统默认建立和使用的以时间字符串作为文件名称的时间格式
+    // 系统默认建立和使用的以时间字符串作为文件名称的时间格式
     private static final String LOCALROOT = PropertiesUtil.getConfigBykey("uploadPath");
     private static final String URLROOT = PropertiesUtil.getConfigBykey("urlPath");
 
@@ -88,7 +88,7 @@ public class FileUtil {
      * @return
      */
     private static String getTempRelativePath() {
-        //从配置文件中获取文件存放路径
+        // 从配置文件中获取文件存放路径
         String finalPath = LOCALROOT + FILE_UPLOAD_DIR + "temp";
         return makeDirs(finalPath) ? FILE_UPLOAD_DIR + "temp" : "";
     }
@@ -100,7 +100,7 @@ public class FileUtil {
      * @return
      */
     private static String getImageRelativePath(String path) {
-        //从配置文件中获取文件存放路径
+        // 从配置文件中获取文件存放路径
         path = path.endsWith("/") ? path : path + "/";
         String finalPath = LOCALROOT + FILE_UPLOAD_DIR + path;
         return makeDirs(finalPath) ? FILE_UPLOAD_DIR + path : "";
@@ -111,7 +111,7 @@ public class FileUtil {
      * @return
      */
     private static String getImageRelativePathByDate(LocalDateTime date) {
-        //获取时间格式的路径名
+        // 获取时间格式的路径名
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FILE_DATE_DIR_FMT);
         String datePath = IMAGE + date.format(formatter);
         return getImageRelativePath(datePath);
@@ -122,7 +122,7 @@ public class FileUtil {
      * @return
      */
     private static String getThumbRelativePathByDate(LocalDateTime date) {
-        //获取时间格式的路径名
+        // 获取时间格式的路径名
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FILE_DATE_DIR_FMT);
         String datePath = THUMBNAIL + date.format(formatter);
         return getImageRelativePath(datePath);
@@ -202,11 +202,12 @@ public class FileUtil {
      * @param height
      * @return
      */
-    public static ResponseMessage processCropPost(MultipartFile avatar_file, HttpServletRequest request, float x, float y, float width, float height) {
+    public static ResponseMessage processCropPost(MultipartFile avatar_file,
+            HttpServletRequest request, float x, float y, float width, float height) {
         LocalDateTime now = LocalDateTime.now();
         String realFolder = LOCALROOT + getThumbRelativePathByDate(now);
         String urlPath = getThumbUrlPathByDate(now);
-        //判断文件的MIMEtype
+        // 判断文件的MIMEtype
         String type = avatar_file.getContentType();
         if (type == null || !type.toLowerCase().startsWith("image/")) {
             return new ResponseMessage("不支持的文件类型，仅支持图片！", null);
@@ -217,13 +218,14 @@ public class FileUtil {
         String fileName = getDateTypeFileName(now, fileType);
         String fullUrl = urlPath + "/" + fileName;
 
-        //开始上传
+        // 开始上传
         File targetFile = new File(realFolder, fileName);
-        //保存
+        // 保存
         try {
             if (!targetFile.exists()) {
                 InputStream is = avatar_file.getInputStream();
-                ImageUtil.cutAndScale(ImageIO.read(is), targetFile, (int) x, (int) y, (int) width, (int) height, 500, 300);
+                ImageUtil.cutAndScale(ImageIO.read(is), targetFile, (int) x, (int) y, (int) width,
+                        (int) height, 500, 300);
                 is.close();
             }
         } catch (Exception e) {
@@ -239,7 +241,8 @@ public class FileUtil {
      * @param file
      * @return
      */
-    public static ImageData uploadSingleFile(MultipartFile file, HttpServletRequest request, Boolean haveThumb) {
+    public static ImageData uploadSingleFile(MultipartFile file, HttpServletRequest request,
+            Boolean haveThumb) {
         if (!file.isEmpty()) {
             LocalDateTime now = LocalDateTime.now();
             String imageRelativeFolder = getImageRelativePathByDate(now);
@@ -253,10 +256,12 @@ public class FileUtil {
                 file.transferTo(targetFile);
                 logger.info("Upload file path: " + targetFile.getAbsolutePath());
                 if (haveThumb) {
-                    File thumbFile = new File(LOCALROOT + thumbRelativeFolder + File.separator + fileName);
+                    File thumbFile = new File(
+                            LOCALROOT + thumbRelativeFolder + File.separator + fileName);
                     ImageUtil.zoomImage(targetFile, thumbFile, 300);
                 }
-                return new ImageData(fileName, file.getSize(), imageRelativeFolder, thumbRelativeFolder);
+                return new ImageData(fileName, file.getSize(), imageRelativeFolder,
+                        thumbRelativeFolder);
             } catch (Exception e) {
                 logger.error("error", e);
             }
@@ -270,7 +275,8 @@ public class FileUtil {
      * @param files
      * @return
      */
-    public static List<ImageData> uploadMultipleFiles(MultipartFile[] files, HttpServletRequest request) {
+    public static List<ImageData> uploadMultipleFiles(MultipartFile[] files,
+            HttpServletRequest request) {
         List<ImageData> arr = new ArrayList<>();
         for (MultipartFile file : files) {
             arr.add(uploadSingleFile(file, request, true));
@@ -280,8 +286,9 @@ public class FileUtil {
 
     /**
      * 上传普通文件
-     * @param file  文件名
-     * @param request   http请求
+     * 
+     * @param file 文件名
+     * @param request http请求
      * @return
      */
     public static String uploadCommonFile(MultipartFile file, HttpServletRequest request) {
@@ -290,7 +297,8 @@ public class FileUtil {
             String sourceFileName = file.getOriginalFilename();
             String fileType = sourceFileName.substring(sourceFileName.lastIndexOf(".") + 1);
             String fileName = getWidFileName(fileType);
-            File targetFile = new File(LOCALROOT + commonRelativeFolder + File.separator + fileName);
+            File targetFile = new File(
+                    LOCALROOT + commonRelativeFolder + File.separator + fileName);
             try {
                 file.transferTo(targetFile);
                 logger.info("Upload file path: " + targetFile.getAbsolutePath());

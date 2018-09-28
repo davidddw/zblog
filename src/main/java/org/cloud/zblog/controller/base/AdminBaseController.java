@@ -51,7 +51,8 @@ public class AdminBaseController extends BaseController {
 
     @ModelAttribute("loginName")
     public String getLoginName() {
-        return (securityService.findLoggedInUsername()==null)? "":securityService.findLoggedInUsername();
+        return (securityService.findLoggedInUsername() == null) ? ""
+                : securityService.findLoggedInUsername();
     }
 
     @Override

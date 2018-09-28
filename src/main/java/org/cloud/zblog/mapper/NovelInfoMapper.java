@@ -33,7 +33,8 @@ import java.util.List;
  * Created by d05660ddw on 2017/3/6.
  */
 public interface NovelInfoMapper extends BaseMapper<NovelInfo> {
-    List<NovelInfo> selectAllOrderBy(@Param("condition") String condition, @Param("column") String orderColumn, @Param("orderDir") String orderDir);
+    List<NovelInfo> selectAllOrderBy(@Param("condition") String condition,
+            @Param("column") String orderColumn, @Param("orderDir") String orderDir);
 
     int deleteRelationshipFromUser(@Param("id") Long id);
 

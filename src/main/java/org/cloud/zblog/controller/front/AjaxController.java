@@ -103,10 +103,9 @@ public class AjaxController extends FrontBaseController {
      * @return json
      */
     @GetMapping(UrlConstants.GETARTICLE)
-    public
-    @ResponseBody
-    Map<String, Object> articleGetMethod(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> articleGetMethod(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         Map<String, Object> items = new HashMap<>();
         List<Article> articleList = articleService.getAllByDateDesc(pageNum, pageSize);
         items.put("items", new PageInfo<>(articleList));
@@ -119,13 +118,13 @@ public class AjaxController extends FrontBaseController {
      * @return json
      */
     @GetMapping(UrlConstants.GETCATEGORY)
-    public
-    @ResponseBody
-    Map<String, Object> articleGetByCategoryMethod(@PathVariable String categoryName,
-                                                   @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                                   @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> articleGetByCategoryMethod(
+            @PathVariable String categoryName,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         Map<String, Object> items = new HashMap<>();
-        List<Article> articleList = articleService.getArticlesByCategory(new Category(categoryName, null), pageNum, pageSize);
+        List<Article> articleList = articleService
+                .getArticlesByCategory(new Category(categoryName, null), pageNum, pageSize);
         items.put("items", new PageInfo<>(articleList));
         return items;
     }
@@ -139,12 +138,12 @@ public class AjaxController extends FrontBaseController {
      * @return json
      */
     @GetMapping(UrlConstants.GETTAG)
-    public @ResponseBody
-    Map<String, Object> articleGetByTagMethod(@PathVariable String tagName,
-                                              @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                              @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> articleGetByTagMethod(@PathVariable String tagName,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         Map<String, Object> items = new HashMap<>();
-        List<Article> articleList = articleService.getArticlesByTag(new Tag(tagName), pageNum, pageSize);
+        List<Article> articleList = articleService.getArticlesByTag(new Tag(tagName), pageNum,
+                pageSize);
         items.put("items", new PageInfo<>(articleList));
         return items;
     }
@@ -158,18 +157,19 @@ public class AjaxController extends FrontBaseController {
      * @return
      */
     @PostMapping(value = UrlConstants.PATH_LOVE)
-    public
-    @ResponseBody
-    String love(HttpServletRequest request, HttpServletResponse response, @RequestParam String um_id) {
+    public @ResponseBody String love(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam String um_id) {
         Cookie cookie = CookieUtil.getCookieByName(request, CookieConstants.ARTICLEID + um_id);
         Article article = articleService.getArticlesByWid(Long.valueOf(um_id))
-                .orElseThrow(() -> new ResourceNotFoundException("Article", um_id));;
+                .orElseThrow(() -> new ResourceNotFoundException("Article", um_id));
+        ;
         // 判断cookie是否为空
         if (cookie == null) {
             article.setLikeCount(article.getLikeCount() + 1);
             // 数据库操作，点赞个数加
             articleService.love(article);
-            CookieUtil.addCookie(response, CookieConstants.ARTICLEID + um_id, "", CookieConstants.MAXAGE);
+            CookieUtil.addCookie(response, CookieConstants.ARTICLEID + um_id, "",
+                    CookieConstants.MAXAGE);
         }
         return String.valueOf(article.getLikeCount());
     }
@@ -180,10 +180,9 @@ public class AjaxController extends FrontBaseController {
      * @return json
      */
     @GetMapping(UrlConstants.GETALBUMS)
-    public
-    @ResponseBody
-    Map<String, Object> albumGetMethod(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                       @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> albumGetMethod(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         Map<String, Object> items = new HashMap<>();
         List<Album> albums = albumService.getAllAlbum(pageNum, pageSize);
         for (Album album : albums) {
@@ -202,10 +201,9 @@ public class AjaxController extends FrontBaseController {
      * @return json
      */
     @GetMapping(UrlConstants.GETNOVEL)
-    public
-    @ResponseBody
-    Map<String, Object> novelGetMethod(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                       @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> novelGetMethod(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         Map<String, Object> items = new HashMap<>();
         List<NovelInfo> novelInfoList = novelInfoService.getAllNovel(pageNum, pageSize);
         items.put("items", new PageInfo<>(novelInfoList));
@@ -218,13 +216,12 @@ public class AjaxController extends FrontBaseController {
      * @return json
      */
     @GetMapping(UrlConstants.GETNOVELCHAPTER)
-    public
-    @ResponseBody
-    Map<String, Object> novelChapterGetMethod(@PathVariable String novelId,
-                                              @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                              @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> novelChapterGetMethod(@PathVariable String novelId,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         Map<String, Object> novelChapters = new HashMap<>();
-        List<NovelChapter> novelChapter = novelChapterService.getChaptersByNovelId(Long.parseLong(novelId), pageNum, pageSize);
+        List<NovelChapter> novelChapter = novelChapterService
+                .getChaptersByNovelId(Long.parseLong(novelId), pageNum, pageSize);
         novelChapters.put("items", new PageInfo<>(novelChapter));
         return novelChapters;
     }

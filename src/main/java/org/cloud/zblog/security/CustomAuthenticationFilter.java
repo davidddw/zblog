@@ -41,10 +41,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     // proof of concept of how the http.addFilter() works
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request,
+            HttpServletResponse response) throws AuthenticationException {
         if (!request.getMethod().equals("POST")) {
-            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+            throw new AuthenticationServiceException(
+                    "Authentication method not supported: " + request.getMethod());
         }
 
         String username = obtainUsername(request);
@@ -60,7 +61,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         username = username.trim();
 
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+                username, password);
 
         // Allow subclasses to set the "details" property
         setDetails(request, authRequest);

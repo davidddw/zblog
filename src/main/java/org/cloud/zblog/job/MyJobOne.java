@@ -37,8 +37,9 @@ import java.util.Date;
 public class MyJobOne {
     private static int counter = 0;
     private final Logger logger = LoggerFactory.getLogger(MyJobOne.class);
+
     protected void myTask() {
         long ms = System.currentTimeMillis();
-        logger.info(new Date(ms)+ "(" + counter++ + ")");
+        logger.info(new Date(ms) + "(" + counter++ + ")");
     }
 }

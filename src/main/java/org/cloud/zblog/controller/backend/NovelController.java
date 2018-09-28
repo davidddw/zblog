@@ -65,9 +65,8 @@ public class NovelController extends AdminBaseController {
      * 新增
      */
     @PostMapping(value = "/novel", consumes = "multipart/form-data", produces = MediaType.APPLICATION_JSON_VALUE)
-    public
-    @ResponseBody
-    ResponseMessage addNovel(NovelInfo novelInfo, @RequestParam("avatar") MultipartFile file, HttpServletRequest request) {
+    public @ResponseBody ResponseMessage addNovel(NovelInfo novelInfo,
+            @RequestParam("avatar") MultipartFile file, HttpServletRequest request) {
         ImageData imageData = FileUtil.uploadSingleFile(file, request, false);
         novelInfo.setCover(imageData.getFullName());
         long number = novelInfoService.saveOrUpdateNovelInfo(novelInfo);
@@ -78,11 +77,12 @@ public class NovelController extends AdminBaseController {
      * 更新
      */
     @PutMapping(value = "/novel/{novelId}", consumes = "multipart/form-data", produces = MediaType.APPLICATION_JSON_VALUE)
-    public
-    @ResponseBody
-    ResponseMessage updateNovel(@PathVariable String novelId, NovelInfo novelInfo, @RequestParam(value="avatar" ,required =false ) MultipartFile file, HttpServletRequest request) {
+    public @ResponseBody ResponseMessage updateNovel(@PathVariable String novelId,
+            NovelInfo novelInfo,
+            @RequestParam(value = "avatar", required = false) MultipartFile file,
+            HttpServletRequest request) {
         novelInfo.setId(Long.parseLong(novelId));
-        if(file!=null) {
+        if (file != null) {
             ImageData imageData = FileUtil.uploadSingleFile(file, request, false);
             novelInfo.setCover(imageData.getFullName());
         }
@@ -94,16 +94,14 @@ public class NovelController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/novel")
-    public
-    @ResponseBody
-    Map<String, Object> listNovel(@RequestParam String draw,
-                                  @RequestParam int startIndex,
-                                  @RequestParam int pageSize,
-                                  @RequestParam(value = "condition", required = false) String condition,
-                                  @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
-                                  @RequestParam(value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
+    public @ResponseBody Map<String, Object> listNovel(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "condition", required = false) String condition,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
-        info.put("pageData", novelInfoService.getAllByOrder(condition, orderColumn, orderDir, startIndex, pageSize));
+        info.put("pageData", novelInfoService.getAllByOrder(condition, orderColumn, orderDir,
+                startIndex, pageSize));
         info.put("total", novelInfoService.getCountByCondition(condition, new NovelInfo()));
         info.put("draw", draw);
         return info;
@@ -113,23 +111,20 @@ public class NovelController extends AdminBaseController {
      * 删除
      */
     @DeleteMapping("/novel/{id}")
-    public
-    @ResponseBody
-    ResponseMessage removeNovel(@PathVariable String id) {
+    public @ResponseBody ResponseMessage removeNovel(@PathVariable String id) {
         NovelInfo novelInfo = novelInfoService.getById(Long.parseLong(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Novel", id));
-        return new ResponseMessage(String.valueOf(novelInfoService.deleteSafetyById(novelInfo.getId())));
+        return new ResponseMessage(
+                String.valueOf(novelInfoService.deleteSafetyById(novelInfo.getId())));
     }
 
     /**
      * 批量删除
      */
     @PostMapping("/novel/delete")
-    public
-    @ResponseBody
-    ResponseMessage removeNovels(@RequestBody List<String> ids) {
+    public @ResponseBody ResponseMessage removeNovels(@RequestBody List<String> ids) {
         int sum = 0;
-        for(String id : ids) {
+        for (String id : ids) {
             NovelInfo novelInfo = novelInfoService.getById(Long.parseLong(id))
                     .orElseThrow(() -> new ResourceNotFoundException("Novel", id));
             sum += novelInfoService.deleteById(novelInfo.getId());
@@ -142,10 +137,11 @@ public class NovelController extends AdminBaseController {
      */
     @RequestMapping(value = "/uploadNovelPic", method = RequestMethod.POST, produces = "application/json;charset=utf8")
     @ResponseBody
-    public boolean uploadFileHandler(@RequestParam("avatar") MultipartFile file, HttpServletRequest request) {
+    public boolean uploadFileHandler(@RequestParam("avatar") MultipartFile file,
+            HttpServletRequest request) {
         ImageData imageData = FileUtil.uploadSingleFile(file, request, false);
-        if (imageData !=null) {
-        	return true;
+        if (imageData != null) {
+            return true;
         }
         return false;
     }

@@ -41,7 +41,8 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     List<Article> selectArticlesByCategoryId(@Param("id") Long categoryId);
 
-    List<Article> selectAllOrderBy(@Param("column") String column, @Param("orderDir") String orderDir);
+    List<Article> selectAllOrderBy(@Param("column") String column,
+            @Param("orderDir") String orderDir);
 
     List<Article> selectArticlesByReadCount();
 

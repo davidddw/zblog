@@ -88,7 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String RESOURCE_ID = "restservice";
     private static final String CLIENTID = "clientapp";
     private static final String SECRET = "123456";
-    //private static final String REMEMBERME = "rememberme";
+    // private static final String REMEMBERME = "rememberme";
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -119,7 +119,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Configuration
     @Order(4)
     public static class ApiWebSecurityConfig extends WebSecurityConfigurerAdapter {
-
 
         @Bean
         public JwtAccessTokenConverter jwtAccessTokenConverter() {
@@ -157,11 +156,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             UserDetailsService userDetailsService;
 
             @Override
-            public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+            public void configure(AuthorizationServerEndpointsConfigurer endpoints)
+                    throws Exception {
                 // @formatter:off
-                endpoints
-                        .tokenStore(tokenStore)
-                        .authenticationManager(authenticationManager)
+                endpoints.tokenStore(tokenStore).authenticationManager(authenticationManager)
                         .accessTokenConverter(jwtAccessTokenConverter)
                         .userDetailsService(userDetailsService);
                 // @formatter:on
@@ -170,15 +168,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             @Override
             public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
                 // @formatter:off
-                clients
-                        .inMemory()
-                        .withClient(CLIENTID)
+                clients.inMemory().withClient(CLIENTID)
                         .authorizedGrantTypes("password", "refresh_token")
-                        .authorities("ADMIN", "USER")
-                        .scopes("read", "write")
-                        .resourceIds(RESOURCE_ID)
-                        .secret(SECRET)
-                        .accessTokenValiditySeconds(1200)
+                        .authorities("ADMIN", "USER").scopes("read", "write")
+                        .resourceIds(RESOURCE_ID).secret(SECRET).accessTokenValiditySeconds(1200)
                         .refreshTokenValiditySeconds(3600);
                 // @formatter:on
             }
@@ -189,7 +182,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
          */
         @Configuration
         @Order(3)
-        //注解自动增加了一个类型为 OAuth2AuthenticationProcessingFilter 的过滤器链，
+        // 注解自动增加了一个类型为 OAuth2AuthenticationProcessingFilter 的过滤器链，
         @EnableResourceServer
         protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
@@ -209,25 +202,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             @Override
             public void configure(HttpSecurity http) throws Exception {
                 // @formatter:off
-                ContentNegotiationStrategy contentNegotiationStrategy = http.getSharedObject(ContentNegotiationStrategy.class);
+                ContentNegotiationStrategy contentNegotiationStrategy = http
+                        .getSharedObject(ContentNegotiationStrategy.class);
                 if (contentNegotiationStrategy == null) {
                     contentNegotiationStrategy = new HeaderContentNegotiationStrategy();
                 }
-                MediaTypeRequestMatcher preferredMatcher = new MediaTypeRequestMatcher(contentNegotiationStrategy,
-                        MediaType.APPLICATION_FORM_URLENCODED,
-                        MediaType.APPLICATION_JSON,
-                        MediaType.MULTIPART_FORM_DATA);
+                MediaTypeRequestMatcher preferredMatcher = new MediaTypeRequestMatcher(
+                        contentNegotiationStrategy, MediaType.APPLICATION_FORM_URLENCODED,
+                        MediaType.APPLICATION_JSON, MediaType.MULTIPART_FORM_DATA);
 
-
-                http
-                        .csrf().disable()
-                        .antMatcher(OAUTHAPI + "/**")
-                        .authorizeRequests().anyRequest().hasRole("ADMIN")
-                        .and()
-                        .anonymous().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        .and()
+                http.csrf().disable().antMatcher(OAUTHAPI + "/**").authorizeRequests().anyRequest()
+                        .hasRole("ADMIN").and().anonymous().disable().sessionManagement()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                         .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
-                        .defaultAuthenticationEntryPointFor(authenticationEntryPoint, preferredMatcher);
+                        .defaultAuthenticationEntryPointFor(authenticationEntryPoint,
+                                preferredMatcher);
                 // @formatter:on
             }
         }
@@ -235,7 +224,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             // @formatter:off
-            http.csrf().disable().antMatcher(WEB + "/login").authorizeRequests().anyRequest().permitAll();
+            http.csrf().disable().antMatcher(WEB + "/login").authorizeRequests().anyRequest()
+                    .permitAll();
             // @formatter:on
         }
     }
@@ -275,12 +265,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         @Bean
         public UsernamePasswordAuthenticationFilter customAuthenticationFilter() {
-            /* All the configuration you do in http.formLogin().x().y().z() is applied to the standard
-             * UsernamePasswordAuthenticationFilter not the custom filter you build. You will need to configure it
+            /*
+             * All the configuration you do in http.formLogin().x().y().z() is
+             * applied to the standard UsernamePasswordAuthenticationFilter not
+             * the custom filter you build. You will need to configure it
              * manually yourself. My auth filter initialization looks like this:
              */
             CustomAuthenticationFilter authFilter = new CustomAuthenticationFilter();
-            authFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(WEB + "/login","POST"));
+            authFilter.setRequiresAuthenticationRequestMatcher(
+                    new AntPathRequestMatcher(WEB + "/login", "POST"));
             authFilter.setAuthenticationManager(authenticationManager);
             authFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
             authFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
@@ -291,24 +284,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            //默认没有UsernamePasswordAuthenticationFilter，需要自定义一个filter，并将之放置在LogoutFilter之后。
+            // 默认没有UsernamePasswordAuthenticationFilter，需要自定义一个filter，并将之放置在LogoutFilter之后。
             http.addFilterAfter(customAuthenticationFilter(), LogoutFilter.class);
-            http
-                    .csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers("/", WEB + "/**").permitAll()
-                    .antMatchers(ADMIN + "/**").access("hasAnyRole('ADMIN','USER')")
-                    .and()
-                    .formLogin().loginPage(WEB + "/login").permitAll().usernameParameter("username").passwordParameter("password")
-                    .and()
-                    .rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    .tokenValiditySeconds(1209600)
-                    .and()
-                    .csrf().requireCsrfProtectionMatcher(new RestRequestMatcher())
-                    .and()
-                    .logout().logoutSuccessUrl(WEB + "/login?logout").permitAll()
-                    .and()
+            http.csrf().disable().authorizeRequests().antMatchers("/", WEB + "/**").permitAll()
+                    .antMatchers(ADMIN + "/**").access("hasAnyRole('ADMIN','USER')").and()
+                    .formLogin().loginPage(WEB + "/login").permitAll().usernameParameter("username")
+                    .passwordParameter("password").and().rememberMe()
+                    .tokenRepository(persistentTokenRepository()).tokenValiditySeconds(1209600)
+                    .and().csrf().requireCsrfProtectionMatcher(new RestRequestMatcher()).and()
+                    .logout().logoutSuccessUrl(WEB + "/login?logout").permitAll().and()
                     .exceptionHandling().accessDeniedPage(WEB + "/403");
         }
 
@@ -324,7 +308,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // No CSRF due to api call
                 if (apiMatcher.matches(request))
                     return false;
-                // CSRF for everything else that is not an API call or an allowedMethod
+                // CSRF for everything else that is not an API call or an
+                // allowedMethod
                 return true;
             }
         }

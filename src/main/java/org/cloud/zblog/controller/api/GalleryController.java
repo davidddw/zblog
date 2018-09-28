@@ -40,8 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by d05660ddw on 2017/6/4.
- * novel api handler
+ * Created by d05660ddw on 2017/6/4. novel api handler
  */
 
 @RestController
@@ -52,20 +51,21 @@ public class GalleryController extends APIBaseController {
 
     /**
      * 查询
+     * 
      * @param pageNum
      * @param pageSize
      * @return
      */
     @GetMapping("/gallery")
-    public
-    @ResponseBody
-    Map<String, Object> getGallery(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                   @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> getGallery(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         List<GalleryData> galleryDataList = new ArrayList<>();
         List<Gallery> galleryList = galleryService.getAllGallery(pageNum, pageSize);
         for (Gallery gallery : galleryList) {
             String url = getBasePath() + gallery.getPath() + gallery.getName();
-            GalleryData galleryData = new GalleryData(gallery.getId(), url, gallery.getAlbum().getDescription());
+            GalleryData galleryData = new GalleryData(gallery.getId(), url,
+                    gallery.getAlbum().getDescription());
             galleryDataList.add(galleryData);
         }
         Map<String, Object> info = new HashMap<>();

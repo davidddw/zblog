@@ -35,5 +35,6 @@ import java.util.List;
 public interface CategoryMapper extends BaseMapper<Category> {
     Category selectByName(String name);
 
-    List<Category> selectAllOrderBy(@Param("column") String column, @Param("orderDir") String orderDir);
+    List<Category> selectAllOrderBy(@Param("column") String column,
+            @Param("orderDir") String orderDir);
 }

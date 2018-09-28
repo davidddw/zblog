@@ -48,63 +48,63 @@ import com.alibaba.druid.pool.DruidDataSource;
 @EnableTransactionManagement
 public class DataConfiguration {
 
-	@Value("${spring.datasource.url}")
-	private String url;
+    @Value("${spring.datasource.url}")
+    private String url;
 
-	@Value("${spring.datasource.username}")
-	private String username;
+    @Value("${spring.datasource.username}")
+    private String username;
 
-	@Value("${spring.datasource.password}")
-	private String password;
+    @Value("${spring.datasource.password}")
+    private String password;
 
-	@Value("${spring.datasource.driver-class-name}")
-	private String driverClass;
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClass;
 
-	@Value("${spring.datasource.initialSize}")
-	private Integer initialSize;
+    @Value("${spring.datasource.initialSize}")
+    private Integer initialSize;
 
-	@Value("${spring.datasource.maxActive}")
-	private Integer maxActive;
+    @Value("${spring.datasource.maxActive}")
+    private Integer maxActive;
 
-	@Value("${spring.datasource.minIdle}")
-	private Integer minIdle;
+    @Value("${spring.datasource.minIdle}")
+    private Integer minIdle;
 
-	@Value("${spring.datasource.maxWait}")
-	private Integer maxWait;
+    @Value("${spring.datasource.maxWait}")
+    private Integer maxWait;
 
-	@Value("${spring.datasource.timeBetweenEvictionRunsMillis}")
-	private Integer timeBetweenEvictionRunsMillis;
+    @Value("${spring.datasource.timeBetweenEvictionRunsMillis}")
+    private Integer timeBetweenEvictionRunsMillis;
 
-	@Value("${spring.datasource.minEvictableIdleTimeMillis}")
-	private Integer minEvictableIdleTimeMillis;
+    @Value("${spring.datasource.minEvictableIdleTimeMillis}")
+    private Integer minEvictableIdleTimeMillis;
 
-	@Value("${spring.datasource.validationQuery}")
-	private String validationQuery;
+    @Value("${spring.datasource.validationQuery}")
+    private String validationQuery;
 
-	@Value("${spring.datasource.testOnBorrow}")
-	private boolean testOnBorrow;
-	
-	@Value("${spring.datasource.testWhileIdle}")
-	private boolean testWhileIdle;
-	
-	@Value("${spring.datasource.testOnReturn}")
-	private boolean testOnReturn;
-	
-	@Value("${spring.datasource.poolPreparedStatements}")
-	private boolean poolPreparedStatements;
-	
-	@Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize}")
-	private Integer maxPoolPreparedStatementPerConnectionSize;
-	
-	@Value("${spring.datasource.filters}")
-	private String filters;
+    @Value("${spring.datasource.testOnBorrow}")
+    private boolean testOnBorrow;
+
+    @Value("${spring.datasource.testWhileIdle}")
+    private boolean testWhileIdle;
+
+    @Value("${spring.datasource.testOnReturn}")
+    private boolean testOnReturn;
+
+    @Value("${spring.datasource.poolPreparedStatements}")
+    private boolean poolPreparedStatements;
+
+    @Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize}")
+    private Integer maxPoolPreparedStatementPerConnectionSize;
+
+    @Value("${spring.datasource.filters}")
+    private String filters;
 
     @Bean(destroyMethod = "close", initMethod = "init")
     public DataSource dataSource() throws SQLException {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUrl(url);
-        dataSource.setUsername(username);//鐢ㄦ埛鍚�
-        dataSource.setPassword(password);//瀵嗙爜
+        dataSource.setUsername(username);// 鐢ㄦ埛鍚�
+        dataSource.setPassword(password);// 瀵嗙爜
         dataSource.setDriverClassName(driverClass);
         dataSource.setInitialSize(initialSize);
         dataSource.setMaxActive(maxActive);
@@ -117,14 +117,16 @@ public class DataConfiguration {
         dataSource.setTestWhileIdle(testWhileIdle);
         dataSource.setTestOnReturn(testOnReturn);
         dataSource.setPoolPreparedStatements(poolPreparedStatements);
-        dataSource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
-        //閰嶇疆鐩戞帶缁熻鎷︽埅鐨刦ilters锛屽幓鎺夊悗鐩戞帶鐣岄潰sql鏃犳硶缁熻锛�'wall'鐢ㄤ簬闃茬伀澧�
+        dataSource.setMaxPoolPreparedStatementPerConnectionSize(
+                maxPoolPreparedStatementPerConnectionSize);
+        // 閰嶇疆鐩戞帶缁熻鎷︽埅鐨刦ilters锛屽幓鎺夊悗鐩戞帶鐣岄潰sql鏃犳硶缁熻锛�'wall'鐢ㄤ簬闃茬伀澧�
         dataSource.setFilters(filters);
         return dataSource;
     }
 
     @Bean(name = "transactionManager")
-    public DataSourceTransactionManager dataSourceTransactionManager() throws PropertyVetoException, SQLException {
+    public DataSourceTransactionManager dataSourceTransactionManager()
+            throws PropertyVetoException, SQLException {
         return new DataSourceTransactionManager(dataSource());
     }
 

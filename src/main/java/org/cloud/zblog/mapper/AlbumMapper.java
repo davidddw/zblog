@@ -34,5 +34,6 @@ import java.util.List;
  * Created by d05660ddw on 2017/4/4.
  */
 public interface AlbumMapper extends BaseMapper<Album> {
-    List<Album> selectAllOrderBy(@Param("column") String column, @Param("orderDir") String orderDir);
+    List<Album> selectAllOrderBy(@Param("column") String column,
+            @Param("orderDir") String orderDir);
 }

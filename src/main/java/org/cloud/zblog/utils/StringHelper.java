@@ -43,7 +43,8 @@ public class StringHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(StringHelper.class);
 
-    private StringHelper() {}
+    private StringHelper() {
+    }
 
     public static String getHtmlContentFromTxt(String filename) {
         String content = "";
@@ -145,7 +146,7 @@ public class StringHelper {
 
     public static int parseWithDefault(String number, int defaultVal) {
         try {
-            return Integer.parseInt(number)<0? 0 :Integer.parseInt(number);
+            return Integer.parseInt(number) < 0 ? 0 : Integer.parseInt(number);
         } catch (NumberFormatException e) {
             return defaultVal;
         }
@@ -153,7 +154,7 @@ public class StringHelper {
 
     public static Long parseLongWithDefault(String number, long defaultVal) {
         try {
-            return Long.parseLong(number)<0? 0 :Long.parseLong(number);
+            return Long.parseLong(number) < 0 ? 0 : Long.parseLong(number);
         } catch (NumberFormatException e) {
             return defaultVal;
         }

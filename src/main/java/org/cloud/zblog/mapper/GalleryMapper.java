@@ -35,5 +35,6 @@ import java.util.List;
 public interface GalleryMapper extends BaseMapper<Gallery> {
     List<Gallery> selectGalleriesByAlbum(@Param("id") Long id);
 
-    List<Gallery> selectAllOrderBy(@Param("column") String orderColumn, @Param("orderDir") String orderDir);
+    List<Gallery> selectAllOrderBy(@Param("column") String orderColumn,
+            @Param("orderDir") String orderDir);
 }

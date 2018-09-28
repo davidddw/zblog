@@ -57,6 +57,7 @@ public class PostCommentController extends FrontBaseController {
 
     @Autowired
     private ICommentService commentService;
+
     /**
      *
      * 提交评论，返回json数据
@@ -65,18 +66,17 @@ public class PostCommentController extends FrontBaseController {
      * @return json
      */
     @RequestMapping(value = "/node/postComment", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    Map<String, Object> addComment(CommentInfo commentInfo) {
+    public @ResponseBody Map<String, Object> addComment(CommentInfo commentInfo) {
         Map<String, Object> map = new HashMap<>();
         String validateCode = commentInfo.getValidateCode();
-        //boolean checkCodeValidate = validateCode.equals(request.getSession().getAttribute("validateCode"));
+        // boolean checkCodeValidate =
+        // validateCode.equals(request.getSession().getAttribute("validateCode"));
         boolean checkCodeValidate = true;
         String returnMessage;
         if (checkCodeValidate) {
             Long postId = commentInfo.getPostId();
-            Article article = articleService.getById(postId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Album", String.valueOf(postId)));
+            Article article = articleService.getById(postId).orElseThrow(
+                    () -> new ResourceNotFoundException("Album", String.valueOf(postId)));
             if (article != null) {
                 Long commentId = commentService.addNewComment(commentInfo, article);
                 if (commentId > 0) {
@@ -103,7 +103,8 @@ public class PostCommentController extends FrontBaseController {
      * @return
      */
     @GetMapping(value = UrlConstants.VALIDATE)
-    public void validateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void validateCode(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         // 设置浏览器不缓存本页
         response.setHeader("Cache-Control", "no-cache");
         // 生成验证码，写入用户session
@@ -111,7 +112,8 @@ public class PostCommentController extends FrontBaseController {
         request.getSession().setAttribute("validateCode", verifyCode);
         // 输出验证码给客户端
         response.setContentType("image/jpeg");
-        BufferedImage bim = ValidateCode.generateImageCode(verifyCode, 90, 30, 3, true, null, null, null, request.getServletContext());
+        BufferedImage bim = ValidateCode.generateImageCode(verifyCode, 90, 30, 3, true, null, null,
+                null, request.getServletContext());
         ImageIO.write(bim, "JPEG", response.getOutputStream());
     }
 }

@@ -67,7 +67,7 @@ public class AdminFormController extends AdminBaseController {
      */
     @GetMapping(UrlConstants.WRITEARTICLE)
     public ModelAndView newArticleHandler(HttpServletRequest request,
-                                          @RequestParam(value = "id", required = false) String id) {
+            @RequestParam(value = "id", required = false) String id) {
         ModelAndView result = defaultModelAndView(UrlConstants.WRITEARTICLE, request);
         if (null != id) {
             Article article = articleService.getById(Long.parseLong(id))

@@ -72,9 +72,7 @@ public class AlbumController extends AdminBaseController {
      * 新增
      */
     @PostMapping("/album")
-    public
-    @ResponseBody
-    ResponseMessage addAlbum(@RequestBody Album album) {
+    public @ResponseBody ResponseMessage addAlbum(@RequestBody Album album) {
         long number = albumService.saveOrUpdateAlbum(album);
         return new ResponseMessage(String.valueOf(number));
     }
@@ -83,9 +81,8 @@ public class AlbumController extends AdminBaseController {
      * 更新
      */
     @PutMapping("/album/{id}")
-    public
-    @ResponseBody
-    ResponseMessage updateAlbum(@PathVariable String id, @RequestBody Album album) {
+    public @ResponseBody ResponseMessage updateAlbum(@PathVariable String id,
+            @RequestBody Album album) {
         album.setId(Long.parseLong(id));
         long number = albumService.saveOrUpdateAlbum(album);
         return new ResponseMessage(String.valueOf(number));
@@ -95,15 +92,13 @@ public class AlbumController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/album")
-    public
-    @ResponseBody
-    Map<String, Object> listAlbum(@RequestParam String draw,
-                                  @RequestParam int startIndex,
-                                  @RequestParam int pageSize,
-                                  @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
-                                  @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
+    public @ResponseBody Map<String, Object> listAlbum(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
-        info.put("pageData", albumService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
+        info.put("pageData",
+                albumService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
         info.put("total", albumService.getCount(new Album()));
         info.put("draw", draw);
         return info;
@@ -113,9 +108,7 @@ public class AlbumController extends AdminBaseController {
      * 删除，除了第一个其他允许删除
      */
     @DeleteMapping("/album/{id}")
-    public
-    @ResponseBody
-    ResponseMessage removeAlbum(@PathVariable String id) {
+    public @ResponseBody ResponseMessage removeAlbum(@PathVariable String id) {
         Album album = albumService.getById(Long.parseLong(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Album", id));
         return new ResponseMessage(String.valueOf(albumService.deleteById(album.getId())));
@@ -125,11 +118,9 @@ public class AlbumController extends AdminBaseController {
      * 批量删除，除了第一个其他允许删除
      */
     @PostMapping("/album/delete")
-    public
-    @ResponseBody
-    ResponseMessage removeAlbums(@RequestBody List<String> ids) {
+    public @ResponseBody ResponseMessage removeAlbums(@RequestBody List<String> ids) {
         int sum = 0;
-        for(String id : ids) {
+        for (String id : ids) {
             Album album = albumService.getById(Long.parseLong(id))
                     .orElseThrow(() -> new ResourceNotFoundException("Album", id));
             sum += albumService.deleteById(album.getId());
@@ -142,11 +133,13 @@ public class AlbumController extends AdminBaseController {
      */
     @RequestMapping(value = "/uploadSingleFile", method = RequestMethod.POST, produces = "application/json;charset=utf8")
     @ResponseBody
-    public boolean uploadFileHandler(@RequestParam("avatar1") MultipartFile file, HttpServletRequest request) {
+    public boolean uploadFileHandler(@RequestParam("avatar1") MultipartFile file,
+            HttpServletRequest request) {
         ImageData imageData = FileUtil.uploadSingleFile(file, request, false);
-//        albumService.saveOrUpdateAlbum()
-//        Gallery gallery = new Gallery(imageData.getCaption(), imageData.getSize(), imageData.getImage(), imageData.getThumb());
-//        long num = galleryService.saveOrUpdateGallery(gallery);
+        // albumService.saveOrUpdateAlbum()
+        // Gallery gallery = new Gallery(imageData.getCaption(),
+        // imageData.getSize(), imageData.getImage(), imageData.getThumb());
+        // long num = galleryService.saveOrUpdateGallery(gallery);
         return true;
     }
 
@@ -155,14 +148,16 @@ public class AlbumController extends AdminBaseController {
      */
     @RequestMapping(value = "/uploadMultipleFile", method = RequestMethod.POST, produces = "application/json;charset=utf8")
     @ResponseBody
-    public boolean uploadMultipleFileHandler(@RequestParam("album") String album,@RequestParam("file") MultipartFile[] files,
-                                             HttpServletRequest request) throws IOException {
+    public boolean uploadMultipleFileHandler(@RequestParam("album") String album,
+            @RequestParam("file") MultipartFile[] files, HttpServletRequest request)
+            throws IOException {
         List<ImageData> list = FileUtil.uploadMultipleFiles(files, request);
         List<Long> ret = new ArrayList<>();
         for (ImageData imageData : list) {
             Album albumset = albumService.getById(Long.parseLong(album))
                     .orElseThrow(() -> new ResourceNotFoundException("Album", album));
-            Gallery gallery = new Gallery(imageData.getCaption(), imageData.getSize(), imageData.getImage(), imageData.getThumb());
+            Gallery gallery = new Gallery(imageData.getCaption(), imageData.getSize(),
+                    imageData.getImage(), imageData.getThumb());
             gallery.setAlbum(albumset);
             ret.add(galleryService.saveOrUpdateGallery(gallery));
         }
@@ -173,9 +168,7 @@ public class AlbumController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/gallery/{id}")
-    public
-    @ResponseBody
-    Map<String, Object> listGalleryByAlbum(@PathVariable String id) {
+    public @ResponseBody Map<String, Object> listGalleryByAlbum(@PathVariable String id) {
         Map<String, Object> info = new HashMap<>();
         Album album = albumService.getById(Long.parseLong(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Album", id));
@@ -187,7 +180,8 @@ public class AlbumController extends AdminBaseController {
         info.put("initialPreview", initialPreview);
         List<ImageData> imageDataList = new ArrayList<>();
         for (Gallery gallery : galleryList) {
-            imageDataList.add(new ImageData(gallery.getId(), gallery.getName(), gallery.getSize(), "120px", "/admin/gallery/delete"));
+            imageDataList.add(new ImageData(gallery.getId(), gallery.getName(), gallery.getSize(),
+                    "120px", "/admin/gallery/delete"));
         }
         info.put("initialPreviewConfig", imageDataList.toArray());
         info.put("append", true);
@@ -198,9 +192,7 @@ public class AlbumController extends AdminBaseController {
      * 删除
      */
     @PostMapping("/gallery/delete")
-    public
-    @ResponseBody
-    ResponseMessage removeGallery(@RequestParam String key) {
+    public @ResponseBody ResponseMessage removeGallery(@RequestParam String key) {
         Gallery gallery = galleryService.getById(Long.parseLong(key))
                 .orElseThrow(() -> new ResourceNotFoundException("Album", key));
         FileUtil.delete(getUploadRoot() + gallery.getImageRelativePath());

@@ -87,79 +87,79 @@ public class ValidateCode {
         Random r = new Random();
 
         switch (type) {
-            case TYPE_NUM_ONLY: // 仅数字
-                while (i < length) {
-                    int t = r.nextInt(10);
-                    if (exChars == null || exChars.indexOf(t + "") < 0) { // 排除特殊字符
-                        code.append(t);
-                        i++;
-                    }
+        case TYPE_NUM_ONLY: // 仅数字
+            while (i < length) {
+                int t = r.nextInt(10);
+                if (exChars == null || exChars.indexOf(t + "") < 0) { // 排除特殊字符
+                    code.append(t);
+                    i++;
                 }
-                break;
+            }
+            break;
 
-            case TYPE_LETTER_ONLY: // 仅字母（即大写字母、小写字母混合）
-                while (i < length) {
-                    int t = r.nextInt(123);
-                    if ((t >= 97 || (t >= 65 && t <= 90))
-                            && (exChars == null || exChars.indexOf((char) t) < 0)) {
-                        code.append((char) t);
-                        i++;
-                    }
+        case TYPE_LETTER_ONLY: // 仅字母（即大写字母、小写字母混合）
+            while (i < length) {
+                int t = r.nextInt(123);
+                if ((t >= 97 || (t >= 65 && t <= 90))
+                        && (exChars == null || exChars.indexOf((char) t) < 0)) {
+                    code.append((char) t);
+                    i++;
                 }
-                break;
+            }
+            break;
 
-            case TYPE_ALL_MIXED: // 数字、大写字母、小写字母混合
-                while (i < length) {
-                    int t = r.nextInt(123);
-                    if ((t >= 97 || (t >= 65 && t <= 90) || (t >= 48 && t <= 57))
-                            && (exChars == null || exChars.indexOf((char) t) < 0)) {
-                        code.append((char) t);
-                        i++;
-                    }
+        case TYPE_ALL_MIXED: // 数字、大写字母、小写字母混合
+            while (i < length) {
+                int t = r.nextInt(123);
+                if ((t >= 97 || (t >= 65 && t <= 90) || (t >= 48 && t <= 57))
+                        && (exChars == null || exChars.indexOf((char) t) < 0)) {
+                    code.append((char) t);
+                    i++;
                 }
-                break;
+            }
+            break;
 
-            case TYPE_NUM_UPPER: // 数字、大写字母混合
-                while (i < length) {
-                    int t = r.nextInt(91);
-                    if ((t >= 65 || (t >= 48 && t <= 57))
-                            && (exChars == null || exChars.indexOf((char) t) < 0)) {
-                        code.append((char) t);
-                        i++;
-                    }
+        case TYPE_NUM_UPPER: // 数字、大写字母混合
+            while (i < length) {
+                int t = r.nextInt(91);
+                if ((t >= 65 || (t >= 48 && t <= 57))
+                        && (exChars == null || exChars.indexOf((char) t) < 0)) {
+                    code.append((char) t);
+                    i++;
                 }
-                break;
+            }
+            break;
 
-            case TYPE_NUM_LOWER: // 数字、小写字母混合
-                while (i < length) {
-                    int t = r.nextInt(123);
-                    if ((t >= 97 || (t >= 48 && t <= 57))
-                            && (exChars == null || exChars.indexOf((char) t) < 0)) {
-                        code.append((char) t);
-                        i++;
-                    }
+        case TYPE_NUM_LOWER: // 数字、小写字母混合
+            while (i < length) {
+                int t = r.nextInt(123);
+                if ((t >= 97 || (t >= 48 && t <= 57))
+                        && (exChars == null || exChars.indexOf((char) t) < 0)) {
+                    code.append((char) t);
+                    i++;
                 }
-                break;
+            }
+            break;
 
-            case TYPE_UPPER_ONLY: // 仅大写字母
-                while (i < length) {
-                    int t = r.nextInt(91);
-                    if ((t >= 65) && (exChars == null || exChars.indexOf((char) t) < 0)) {
-                        code.append((char) t);
-                        i++;
-                    }
+        case TYPE_UPPER_ONLY: // 仅大写字母
+            while (i < length) {
+                int t = r.nextInt(91);
+                if ((t >= 65) && (exChars == null || exChars.indexOf((char) t) < 0)) {
+                    code.append((char) t);
+                    i++;
                 }
-                break;
+            }
+            break;
 
-            case TYPE_LOWER_ONLY: // 仅小写字母
-                while (i < length) {
-                    int t = r.nextInt(123);
-                    if ((t >= 97) && (exChars == null || exChars.indexOf((char) t) < 0)) {
-                        code.append((char) t);
-                        i++;
-                    }
+        case TYPE_LOWER_ONLY: // 仅小写字母
+            while (i < length) {
+                int t = r.nextInt(123);
+                if ((t >= 97) && (exChars == null || exChars.indexOf((char) t) < 0)) {
+                    code.append((char) t);
+                    i++;
                 }
-                break;
+            }
+            break;
         }
         return code.toString();
     }
@@ -186,8 +186,8 @@ public class ValidateCode {
      * @return 图片缓存对象
      */
     public static BufferedImage generateImageCode(String textCode, int width, int height,
-                                                  int interLine, boolean randomLocation, Color backColor, Color foreColor,
-                                                  Color lineColor, ServletContext servletContext) {
+            int interLine, boolean randomLocation, Color backColor, Color foreColor,
+            Color lineColor, ServletContext servletContext) {
 
         foreColor = Color.black;
         backColor = Color.white;
@@ -289,9 +289,9 @@ public class ValidateCode {
      * @return
      */
     private static Font loadFontResource(ServletContext servletContext, int fontSize) {
-        //String ttfFilename = servletContext.getInitParameter("ttfFile");
-        //ValidateCode.class.getClassLoader().getResourceAsStream("verdanab.ttf");
-        //System.out.println(ttfFilename);
+        // String ttfFilename = servletContext.getInitParameter("ttfFile");
+        // ValidateCode.class.getClassLoader().getResourceAsStream("verdanab.ttf");
+        // System.out.println(ttfFilename);
         InputStream is = ValidateCode.class.getClassLoader().getResourceAsStream("verdanab.ttf");
         Font font;
         try {

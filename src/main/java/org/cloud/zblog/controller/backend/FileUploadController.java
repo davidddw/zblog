@@ -47,7 +47,8 @@ import java.io.PrintWriter;
  * 上传图片
  * <p>
  * 为CKEDITOR定制的图片上传功能，后续可以扩展上传其他格式的文件
- * 上传的文件的基础路径为: ${apache.home}/${project.name}/${project.name}/resources/static/upload/yyyy/MM/${'yyyyMMdd'}/
+ * 上传的文件的基础路径为:
+ * ${apache.home}/${project.name}/${project.name}/resources/static/upload/yyyy/MM/${'yyyyMMdd'}/
  * 每个文件夹下最多500个文件
  * </p>
  */
@@ -56,13 +57,15 @@ public class FileUploadController extends AdminBaseController {
     protected final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     @GetMapping(UrlConstants.UPLOADPIC)
-    public void processUpload(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
+    public void processUpload(ModelMap modelMap, HttpServletRequest request,
+            HttpServletResponse response) {
         processUploadPost(modelMap, request, response);
         return;
     }
 
     @PostMapping(UrlConstants.UPLOADPIC)
-    public void processUploadPost(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
+    public void processUploadPost(ModelMap modelMap, HttpServletRequest request,
+            HttpServletResponse response) {
         // 判断提交的请求是否包含文件
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
         if (!isMultipart) {
@@ -78,12 +81,14 @@ public class FileUploadController extends AdminBaseController {
             if (!StringUtils.isEmpty(imageUrlPath)) {
                 String callback = request.getParameter("CKEditorFuncNum");
                 out.println("<script type=\"text/javascript\">");
-                out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + imageUrlPath + "',''" + ")");
+                out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'"
+                        + imageUrlPath + "',''" + ")");
                 out.println("</script>");
                 out.flush();
                 out.close();
             } else {
-                out.println("<script type=\"text/javascript\">alert('格式错误，仅支持jpg|jpeg|bmp|gif|png格式');</script>");
+                out.println(
+                        "<script type=\"text/javascript\">alert('格式错误，仅支持jpg|jpeg|bmp|gif|png格式');</script>");
                 out.flush();
                 out.close();
                 return;
@@ -94,9 +99,9 @@ public class FileUploadController extends AdminBaseController {
     }
 
     @PostMapping(value = UrlConstants.CROPPIC)
-    public @ResponseBody
-    ResponseMessage processCropPost(@RequestParam String avatar_src, @RequestParam String avatar_data, @RequestParam MultipartFile avatar_file,
-                                    MultipartHttpServletRequest request) {
+    public @ResponseBody ResponseMessage processCropPost(@RequestParam String avatar_src,
+            @RequestParam String avatar_data, @RequestParam MultipartFile avatar_file,
+            MultipartHttpServletRequest request) {
         JSONObject joData = (JSONObject) JSONObject.parse(avatar_data);
         // 用户经过剪辑后的图片的大小
         float x = joData.getFloatValue("x");

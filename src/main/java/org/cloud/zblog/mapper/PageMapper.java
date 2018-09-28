@@ -34,6 +34,8 @@ import java.util.List;
  */
 public interface PageMapper extends BaseMapper<Page> {
     Page selectBySlug(String slug);
+
     List<Page> selectNameAndSlug();
+
     List<Page> selectAllOrderBy(@Param("column") String column, @Param("orderDir") String orderDir);
 }

@@ -63,8 +63,7 @@ public class UserController extends AdminBaseController {
      * 新增
      */
     @PostMapping("/user")
-    public @ResponseBody
-    ResponseMessage addUser(@RequestBody User user) {
+    public @ResponseBody ResponseMessage addUser(@RequestBody User user) {
         long number = userService.saveOrUpdateUser(user);
         return new ResponseMessage(String.valueOf(number));
     }
@@ -73,8 +72,8 @@ public class UserController extends AdminBaseController {
      * 更新
      */
     @PutMapping("/user/{id}")
-    public @ResponseBody
-    ResponseMessage updateUser(@PathVariable String id, @RequestBody User user) {
+    public @ResponseBody ResponseMessage updateUser(@PathVariable String id,
+            @RequestBody User user) {
         user.setId(Long.parseLong(id));
         long number = userService.saveOrUpdateUser(user);
         return new ResponseMessage(String.valueOf(number));
@@ -84,14 +83,13 @@ public class UserController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/user")
-    public @ResponseBody
-    Map<String, Object> listUser(@RequestParam String draw,
-                                 @RequestParam int startIndex,
-                                 @RequestParam int pageSize,
-                                 @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
-                                 @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
+    public @ResponseBody Map<String, Object> listUser(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
-        info.put("pageData", userService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
+        info.put("pageData",
+                userService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
         info.put("total", userService.getCount(new User()));
         info.put("draw", draw);
         return info;
@@ -101,15 +99,14 @@ public class UserController extends AdminBaseController {
      * 删除，除了第一个其他允许删除
      */
     @DeleteMapping("/user/{id}")
-    public @ResponseBody
-    ResponseMessage removeUser(@PathVariable String id) {
+    public @ResponseBody ResponseMessage removeUser(@PathVariable String id) {
         User defaultUser = userService.getById(1L)
                 .orElseThrow(() -> new ResourceNotFoundException("User", id));
-        if(!id.equals("1")) {
+        if (!id.equals("1")) {
             User user = userService.getById(Long.parseLong(id))
                     .orElseThrow(() -> new ResourceNotFoundException("Novel", id));
             List<Article> articleList = articleService.getarticlesByUser(user);
-            for(Article article : articleList) {
+            for (Article article : articleList) {
                 article.setUser(defaultUser);
                 articleService.save(article);
             }

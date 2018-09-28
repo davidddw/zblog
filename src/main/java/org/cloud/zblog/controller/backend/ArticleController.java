@@ -57,9 +57,7 @@ public class ArticleController extends AdminBaseController {
      * 新增
      */
     @PostMapping("/article")
-    public
-    @ResponseBody
-    ResponseMessage addArticle(@RequestBody ArticleData articleData) {
+    public @ResponseBody ResponseMessage addArticle(@RequestBody ArticleData articleData) {
         long number = articleService.saveOrUpdateArticleFromData(articleData);
         return new ResponseMessage(String.valueOf(number));
     }
@@ -68,9 +66,8 @@ public class ArticleController extends AdminBaseController {
      * 更新
      */
     @PutMapping("/article/{id}")
-    public
-    @ResponseBody
-    ResponseMessage updateArticle(@PathVariable String id, @RequestBody ArticleData articleData) {
+    public @ResponseBody ResponseMessage updateArticle(@PathVariable String id,
+            @RequestBody ArticleData articleData) {
         articleData.setId(id);
         long number = articleService.saveOrUpdateArticleFromData(articleData);
         return new ResponseMessage(String.valueOf(number));
@@ -80,15 +77,13 @@ public class ArticleController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/article")
-    public
-    @ResponseBody
-    Map<String, Object> listArticle(@RequestParam String draw,
-                                    @RequestParam int startIndex,
-                                    @RequestParam int pageSize,
-                                    @RequestParam (value = "orderColumn", required = false, defaultValue = "createdDate") String orderColumn,
-                                    @RequestParam (value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
+    public @ResponseBody Map<String, Object> listArticle(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "createdDate") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "desc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
-        info.put("pageData", articleService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
+        info.put("pageData",
+                articleService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
         info.put("total", articleService.getCount(new Article()));
         info.put("draw", draw);
         return info;
@@ -96,9 +91,8 @@ public class ArticleController extends AdminBaseController {
 
     /** 删除 */
     @DeleteMapping("/article/{id}")
-    public
-    @ResponseBody
-    ResponseMessage removeArticle(@PathVariable String id) {
-        return new ResponseMessage(String.valueOf(articleService.deleteSafetyById(Long.parseLong(id))));
+    public @ResponseBody ResponseMessage removeArticle(@PathVariable String id) {
+        return new ResponseMessage(
+                String.valueOf(articleService.deleteSafetyById(Long.parseLong(id))));
     }
 }

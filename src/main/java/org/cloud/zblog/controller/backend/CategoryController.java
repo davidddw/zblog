@@ -63,9 +63,7 @@ public class CategoryController extends AdminBaseController {
      * 新增
      */
     @PostMapping("/category")
-    public
-    @ResponseBody
-    ResponseMessage addCategory(@RequestBody Category category) {
+    public @ResponseBody ResponseMessage addCategory(@RequestBody Category category) {
         long number = categoryService.saveOrUpdateCategory(category);
         return new ResponseMessage(String.valueOf(number));
     }
@@ -74,9 +72,8 @@ public class CategoryController extends AdminBaseController {
      * 更新
      */
     @PutMapping("/category/{id}")
-    public
-    @ResponseBody
-    ResponseMessage updateCategory(@PathVariable String id, @RequestBody Category category) {
+    public @ResponseBody ResponseMessage updateCategory(@PathVariable String id,
+            @RequestBody Category category) {
         category.setId(Long.parseLong(id));
         long number = categoryService.saveOrUpdateCategory(category);
         return new ResponseMessage(String.valueOf(number));
@@ -86,15 +83,13 @@ public class CategoryController extends AdminBaseController {
      * 查询
      */
     @GetMapping("/category")
-    public
-    @ResponseBody
-    Map<String, Object> listCategory(@RequestParam String draw,
-                                     @RequestParam int startIndex,
-                                     @RequestParam int pageSize,
-                                     @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
-                                     @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
+    public @ResponseBody Map<String, Object> listCategory(@RequestParam String draw,
+            @RequestParam int startIndex, @RequestParam int pageSize,
+            @RequestParam(value = "orderColumn", required = false, defaultValue = "id") String orderColumn,
+            @RequestParam(value = "orderDir", required = false, defaultValue = "asc") String orderDir) {
         Map<String, Object> info = new HashMap<>();
-        info.put("pageData", categoryService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
+        info.put("pageData",
+                categoryService.getAllByOrder(orderColumn, orderDir, startIndex, pageSize));
         info.put("total", categoryService.getCount(new Category()));
         info.put("draw", draw);
         return info;
@@ -104,21 +99,19 @@ public class CategoryController extends AdminBaseController {
      * 删除，除了第一个其他允许删除
      */
     @DeleteMapping("/category/{id}")
-    public
-    @ResponseBody
-    ResponseMessage removeCategory(@PathVariable String id) {
+    public @ResponseBody ResponseMessage removeCategory(@PathVariable String id) {
         Category defaultCategory = categoryService.getById(1L)
                 .orElseThrow(() -> new ResourceNotFoundException("Page", id));
-        if(!id.equals("1")) {
+        if (!id.equals("1")) {
             Category category = categoryService.getById(Long.parseLong(id))
                     .orElseThrow(() -> new ResourceNotFoundException("Page", id));
             List<Article> articleList = articleService.getArticlesByCategory(category);
-            for(Article article : articleList) {
+            for (Article article : articleList) {
                 article.setCategory(defaultCategory);
                 articleService.save(article);
             }
             new ResponseMessage(String.valueOf(categoryService.deleteById(category.getId())));
-         }
+        }
         return new ResponseMessage("Cannot Delete", "0");
     }
 }

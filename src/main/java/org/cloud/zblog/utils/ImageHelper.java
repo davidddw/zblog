@@ -45,9 +45,8 @@ public class ImageHelper {
     }
 
     public static String getImageUrlPath(HttpServletRequest request, String path) {
-        return request.getScheme() + "://" + request.getServerName() + ":"
-                + request.getServerPort() + request.getContextPath() + "/"
-                + path;
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                + request.getContextPath() + "/" + path;
     }
 
     public static String getImageFormat(String filename) throws IOException {
@@ -84,13 +83,12 @@ public class ImageHelper {
         return newName + suffix;
     }
 
-    public static Map<String, Object> uploadOriginalImage(MultipartFile file, String realPath, String urlPath)
-            throws IOException {
+    public static Map<String, Object> uploadOriginalImage(MultipartFile file, String realPath,
+            String urlPath) throws IOException {
         Map<String, Object> returnValues = new HashMap<>();
         if (file.getSize() > 0) {
             InputStream inputStream = file.getInputStream();
-            String newFileName = rename(file.getOriginalFilename(),
-                    getRandomString(4));
+            String newFileName = rename(file.getOriginalFilename(), getRandomString(4));
             String categoryFolder = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
             String fullDirectory = realPath + categoryFolder;
             if (!new File(fullDirectory).isDirectory()) {
@@ -116,8 +114,8 @@ public class ImageHelper {
         }
     }
 
-    public static Map<String, Object> uploadResizeImage(MultipartFile file, String realPath, String imageFormat, String urlPath)
-            throws IOException {
+    public static Map<String, Object> uploadResizeImage(MultipartFile file, String realPath,
+            String imageFormat, String urlPath) throws IOException {
         Map<String, Object> returnValues = new HashMap<>();
         if (file.getSize() > 0) {
             BufferedImage src = ImageIO.read(file.getInputStream());

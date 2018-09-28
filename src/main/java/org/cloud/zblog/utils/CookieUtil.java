@@ -37,33 +37,37 @@ public class CookieUtil {
 
     /**
      * 设置cookie
+     * 
      * @param response
-     * @param name  cookie名字
+     * @param name cookie名字
      * @param value cookie值
-     * @param maxAge cookie生命周期  以秒为单位
+     * @param maxAge cookie生命周期 以秒为单位
      */
-    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge){
-        Cookie cookie = new Cookie(name,value);
+    public static void addCookie(HttpServletResponse response, String name, String value,
+            int maxAge) {
+        Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
-        if(maxAge>0)  cookie.setMaxAge(maxAge);
+        if (maxAge > 0)
+            cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
 
     /**
      * 根据名字获取cookie
+     * 
      * @param request
      * @param name cookie名字
      * @return
      */
-    public static Cookie getCookieByName(HttpServletRequest request, String name){
-        Map<String,Cookie> cookieMap = ReadCookieMap(request);
+    public static Cookie getCookieByName(HttpServletRequest request, String name) {
+        Map<String, Cookie> cookieMap = ReadCookieMap(request);
         return cookieMap.getOrDefault(name, null);
     }
 
-    private static Map<String,Cookie> ReadCookieMap(HttpServletRequest request) {
-        Map<String,Cookie> cookieMap = new HashMap<>();
-        Cookie[] cookies = request.getCookies();//这样便可以获取一个cookie数组
-        for(Cookie cookie : cookies){
+    private static Map<String, Cookie> ReadCookieMap(HttpServletRequest request) {
+        Map<String, Cookie> cookieMap = new HashMap<>();
+        Cookie[] cookies = request.getCookies();// 这样便可以获取一个cookie数组
+        for (Cookie cookie : cookies) {
             cookieMap.put(cookie.getName(), cookie);
         }
         return cookieMap;

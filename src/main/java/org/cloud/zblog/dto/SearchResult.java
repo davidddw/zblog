@@ -31,7 +31,7 @@ public class SearchResult {
 
     private int id;
 
-    private String markText="";
+    private String markText = "";
 
     private String title;
 

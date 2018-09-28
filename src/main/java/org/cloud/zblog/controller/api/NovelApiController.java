@@ -44,8 +44,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by d05660ddw on 2017/6/4.
- * novel api handler
+ * Created by d05660ddw on 2017/6/4. novel api handler
  */
 
 @RestController
@@ -65,9 +64,9 @@ public class NovelApiController extends APIBaseController {
      * @return json
      */
     @GetMapping("/novel")
-    public @ResponseBody
-    Map<String, Object> getNovelList(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                     @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+    public @ResponseBody Map<String, Object> getNovelList(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
         List<NovelInfo> novelInfoList = novelInfoService.getAllNovel(pageNum, pageSize);
         Map<String, Object> info = new HashMap<>();
         info.put("page", pageNum);
@@ -84,8 +83,7 @@ public class NovelApiController extends APIBaseController {
      * @return
      */
     @GetMapping("/novel/{novelId}")
-    public @ResponseBody
-    NovelInfo getNovelInfoDetails(@PathVariable Long novelId) {
+    public @ResponseBody NovelInfo getNovelInfoDetails(@PathVariable Long novelId) {
         NovelInfo novelInfo = novelInfoService.getById(novelId)
                 .orElseThrow(APINotFoundException::new);
         List<NovelChapter> novelChapter = novelChapterService.getLastChaptersByNovelId(novelId);
@@ -97,11 +95,11 @@ public class NovelApiController extends APIBaseController {
      * 查询
      */
     @GetMapping("/novel/{novelId}/chapter")
-    public @ResponseBody
-    Map<String, Object> getNovelChapterList(@PathVariable Long novelId,
-                                            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
-        List<NovelChapter> novelChapter = novelChapterService.getChaptersByNovelId(novelId, pageNum, pageSize);
+    public @ResponseBody Map<String, Object> getNovelChapterList(@PathVariable Long novelId,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "size", required = false, defaultValue = "50") int pageSize) {
+        List<NovelChapter> novelChapter = novelChapterService.getChaptersByNovelId(novelId, pageNum,
+                pageSize);
         long count = novelChapterService.getCountByNovelId(novelId);
         NovelInfo novelInfo = novelInfoService.getById(novelId)
                 .orElseThrow(APINotFoundException::new);
@@ -118,29 +116,34 @@ public class NovelApiController extends APIBaseController {
      * 查询
      */
     @GetMapping("/novel/{novelId}/{chapterId}")
-    public @ResponseBody
-    Map<String, Object> getNovelDetails(@PathVariable Long novelId, @PathVariable Long chapterId) {
+    public @ResponseBody Map<String, Object> getNovelDetails(@PathVariable Long novelId,
+            @PathVariable Long chapterId) {
         Map<String, Object> info = new HashMap<>();
-        NovelChapter novelDetails = novelChapterService.getDetailsByNovelAndChapter(novelId, chapterId)
+        NovelChapter novelDetails = novelChapterService
+                .getDetailsByNovelAndChapter(novelId, chapterId)
                 .orElseThrow(APINotFoundException::new);
         if (novelDetails == null) {
 
         } else {
-            String content = StringHelper.getContentFromTxt(PropertiesUtil.getConfigBykey("uploadPath") + "/" + novelDetails.getLocation());
+            String content = StringHelper.getContentFromTxt(
+                    PropertiesUtil.getConfigBykey("uploadPath") + "/" + novelDetails.getLocation());
             novelDetails.setLocation(content != null ? content : "");
             info.put("noveldetails", novelDetails);
-            Map<String, NovelChapter> previousNext = novelChapterService.getPrevAndNextNovel(novelId, chapterId);
+            Map<String, NovelChapter> previousNext = novelChapterService
+                    .getPrevAndNextNovel(novelId, chapterId);
             String prevUrl, nextUrl;
             if (previousNext.get("prev_novel") == null) {
                 prevUrl = novelDetails.getNovel().getId().toString();
             } else {
-                prevUrl = String.format("%s/%s", novelDetails.getNovel().getId(), previousNext.get("prev_novel").getWid());
+                prevUrl = String.format("%s/%s", novelDetails.getNovel().getId(),
+                        previousNext.get("prev_novel").getWid());
             }
             info.put("prevurl", prevUrl);
             if (previousNext.get("next_novel") == null) {
                 nextUrl = novelDetails.getNovel().getId().toString();
             } else {
-                nextUrl = String.format("%s/%s", novelDetails.getNovel().getId(), previousNext.get("next_novel").getWid());
+                nextUrl = String.format("%s/%s", novelDetails.getNovel().getId(),
+                        previousNext.get("next_novel").getWid());
             }
             info.put("nexturl", nextUrl);
         }

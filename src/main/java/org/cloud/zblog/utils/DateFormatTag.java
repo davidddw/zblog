@@ -43,9 +43,10 @@ import java.util.Map;
 public class DateFormatTag implements TemplateDirectiveModel {
 
     private static Logger logger = LoggerFactory.getLogger(DateFormatTag.class);
+
     @Override
-    public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body)
-            throws TemplateException, IOException {
+    public void execute(Environment env, Map params, TemplateModel[] loopVars,
+            TemplateDirectiveBody body) throws TemplateException, IOException {
         String text = "";
         // 标签上的text属性上的值
         if (params.get("date") != null) {

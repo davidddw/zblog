@@ -11,7 +11,7 @@ import java.util.Set;
 public class SetOpt {
     public static <T> Set<T> diff(List<T> list, String[] tValues, Class<T> klass) {
         Set<T> newValues = new HashSet<>();
-        for (int i = 0; i < tValues.length; i++){
+        for (int i = 0; i < tValues.length; i++) {
             try {
                 T newT = klass.getDeclaredConstructor(String.class).newInstance(tValues[i]);
                 newValues.add(newT);
